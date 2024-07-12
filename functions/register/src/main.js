@@ -20,6 +20,7 @@ export default async ({ req, res, log, error }) => {
       const {username, email, password } = req.body;
 
       const id = ID.unique();
+      log(typeof req.body)
       log({
         id,username,email,password
       })
