@@ -17,13 +17,10 @@ export default async ({ req, res, log, error }) => {
 
   if(req.method === "POST"){
     try {
-      const {username, email, password } = req.body;
+      const {username, email, password } = JSON.parse(req.body);
 
       const id = ID.unique();
-      log(typeof req.body)
-      log({
-        id,username,email,password
-      })
+  
       const createdUser = await account.create(id, email, password);
 
       const createdUserProfile = await databases.createDocument(
