@@ -1,6 +1,7 @@
 "use client";
 
 import { UserContextProvider } from "@/contexts/user/UserContextProvider";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 export default function AppLayout({
   children,
@@ -9,7 +10,15 @@ export default function AppLayout({
 }>) {
   return (
     <UserContextProvider>
-      <div className="min-h-screen flex flex-col">{children}</div>
+      <div className="h-screen flex overflow-hidden">
+        <aside className="w-[400px] border-r border-border">Sidebar</aside>
+        <div className="grow h-full">
+          <ScrollArea className="h-full">
+            {children}
+            <div className="h-[2000px]"></div>
+          </ScrollArea>
+        </div>
+      </div>
     </UserContextProvider>
   );
 }
