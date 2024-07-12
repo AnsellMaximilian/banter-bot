@@ -1,7 +1,8 @@
+import { User } from "@/type";
 import { createContext, useContext } from "react";
 export interface UserContextData {
-  currentUser: any | null;
-  setCurrentUser: (user: any | null) => void;
+  currentUser: User | null;
+  setCurrentUser: (user: User | null) => void;
   isLoading: boolean;
   login: (email: string, password: string) => void;
   logout: () => void;

@@ -25,6 +25,9 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { config, functions } from "@/lib/appwrite";
+import { ExecutionMethod } from "appwrite";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -33,12 +36,32 @@ const formSchema = z.object({
 });
 
 export default function RegisterPage() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { username, email, password } = values;
+
+    const body = {
+      username,
+      email,
+      password,
+    };
+
+    const res = await functions.createExecution(
+      config.registerFuncId,
+      JSON.stringify(body),
+      false,
+      "/",
+      ExecutionMethod.POST
+    );
+
+    console.log(res);
+    if (!res.errors) {
+      router.push("/app");
+    }
   }
   return (
     <div className="flex flex-col justify-center grow items-center">
