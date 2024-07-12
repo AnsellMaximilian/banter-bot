@@ -19,7 +19,11 @@ export default async ({ req, res, log, error }) => {
 
   if(req.method === "POST"){
     try {
-      const createdUser = await account.create(ID.unique(), email, password);
+      const id = ID.unique();
+      log({
+        id,username,email,password
+      })
+      const createdUser = await account.create(id, email, password);
 
       const createdUserProfile = await databases.createDocument(
           process.env.DB_ID,
