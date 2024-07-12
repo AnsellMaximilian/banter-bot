@@ -15,6 +15,8 @@ export default async ({ req, res, log, error }) => {
 
   const {username, email, password } = req.body;
 
+  log(req.body)
+
   if(req.method === "POST"){
     try {
       const createdUser = await account.create(ID.unique(), email, password);
