@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update-functions": "git add functions/** && git commit -m \"update function\" && git push origin main"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
