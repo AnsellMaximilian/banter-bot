@@ -13,12 +13,12 @@ export default async ({ req, res, log, error }) => {
   const databases = new Databases(client)
   const account = new Account(client)
 
-  const {username, email, password } = req.body;
 
-  log(req.body)
 
   if(req.method === "POST"){
     try {
+      const {username, email, password } = req.body;
+
       const id = ID.unique();
       log({
         id,username,email,password
