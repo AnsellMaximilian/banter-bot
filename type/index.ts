@@ -17,6 +17,7 @@ export type User = Models.User<Models.Preferences> & {
 export type Conversation = Models.Document & {
   title: string;
   description: string;
+  prompt: string;
 };
 
 export enum SenderType {
@@ -33,4 +34,15 @@ export type Message = Models.Document & {
 
 export type UserConversation = Models.Document & {
   userId: string;
+  language: string;
+  personalityId: string;
+};
+
+export type Personality = Models.Document & {
+  name: string;
+  description: string;
+  prompt: string;
+  persona: string;
+  imageUrl: string;
+  traits: string;
 };
