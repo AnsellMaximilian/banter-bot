@@ -131,7 +131,7 @@ export const exampleConversations: Omit<Conversation, keyof Models.Document>[] =
 
 export const exampleMessages: Omit<
   Message,
-  keyof Models.Document | "conversationId"
+  keyof Models.Document | "userConversationId"
 >[] = [
   {
     textContent: "Hello! How can I assist you today?",

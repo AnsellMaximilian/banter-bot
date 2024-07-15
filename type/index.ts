@@ -28,5 +28,9 @@ export type Message = Models.Document & {
   textContent: string;
   sender: string;
   senderType: SenderType;
-  conversationId: string;
+  userConversationId: string;
+};
+
+export type UserConversation = Models.Document & {
+  userId: string;
 };
