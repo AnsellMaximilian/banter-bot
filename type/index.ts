@@ -36,6 +36,8 @@ export type UserConversation = Models.Document & {
   userId: string;
   language: string;
   personalityId: string;
+  isComplete: boolean;
+  conversation: Conversation;
 };
 
 export type Personality = Models.Document & {
