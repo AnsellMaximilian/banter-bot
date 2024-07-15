@@ -1,4 +1,4 @@
-import { Conversation } from "@/type";
+import { Conversation, Message, SenderType } from "@/type";
 import { Models } from "appwrite";
 
 export const exampleConversations: Omit<Conversation, keyof Models.Document>[] =
@@ -128,3 +128,115 @@ export const exampleConversations: Omit<Conversation, keyof Models.Document>[] =
       description: "Exchange tips and advice on photography",
     },
   ];
+
+export const exampleMessages: Omit<
+  Message,
+  keyof Models.Document | "conversationId"
+>[] = [
+  {
+    textContent: "Hello! How can I assist you today?",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "Hi! I need help with my project.",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent: "Sure, what do you need help with?",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent:
+      "I'm struggling with understanding how to use Retrofit in Android Studio.",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent:
+      "Retrofit is a type-safe HTTP client for Android and Java. How can I assist you with it?",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent:
+      "Can you provide an example of how to create a Retrofit instance?",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent:
+      "Certainly! Here's an example of how to create a Retrofit instance...",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "Thanks! That really helps.",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent: "You're welcome! Let me know if you need any more help.",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "Can you explain how to handle API responses with Retrofit?",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent:
+      "Of course! You can handle API responses by using callback methods. Would you like an example?",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "Yes, please.",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent: "Here’s an example of handling API responses with Retrofit...",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "Got it. How do I handle errors in Retrofit?",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent:
+      "You can handle errors using the `onFailure` callback method. Would you like a code snippet?",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "Yes, that would be helpful.",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent: "Here’s a code snippet to handle errors in Retrofit...",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "Thank you! This is really helpful.",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+  {
+    textContent: "You're welcome! Feel free to ask if you have more questions.",
+    sender: "ChatGPT",
+    senderType: SenderType.BOT,
+  },
+  {
+    textContent: "That's all for now. Thanks again!",
+    sender: "Alice",
+    senderType: SenderType.USER,
+  },
+];

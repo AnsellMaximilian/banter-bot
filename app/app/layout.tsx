@@ -23,7 +23,7 @@ export default function AppLayout({
   return (
     <UserContextProvider>
       <div className="h-screen flex overflow-hidden">
-        <aside className="w-[360px] min-w-[360px] border-r-4 border-border p-4">
+        <aside className="w-[360px] min-w-[360px] border-r-2 border-border p-4">
           <div className="p-4 flex gap-4 items-center">
             <Image src={logo} height={60} width={60} alt="logo" />
             <div className="text-2xl font-bold">Banter Bot</div>
@@ -35,9 +35,7 @@ export default function AppLayout({
           </ul>
         </aside>
         <div className="grow h-full">
-          <ScrollArea className="h-full overflow-y-auto p-4">
-            {children}
-          </ScrollArea>
+          <ScrollArea className="h-full overflow-y-auto">{children}</ScrollArea>
         </div>
       </div>
     </UserContextProvider>

@@ -18,3 +18,15 @@ export type Conversation = Models.Document & {
   title: string;
   description: string;
 };
+
+export enum SenderType {
+  USER = "USER",
+  BOT = "BOT",
+}
+
+export type Message = Models.Document & {
+  textContent: string;
+  sender: string;
+  senderType: SenderType;
+  conversationId: string;
+};
