@@ -4,11 +4,12 @@ import ChatBubble from "@/components/conversation/ChatBubble";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { exampleMessages } from "@/const/examples";
+import { config, databases } from "@/lib/appwrite";
 import { cn } from "@/lib/utils";
-import { Message, SenderType } from "@/type";
+import { Conversation, Message, SenderType } from "@/type";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { SendHorizonal } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Page() {
   return (

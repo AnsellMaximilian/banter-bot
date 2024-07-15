@@ -18,6 +18,8 @@ export type Conversation = Models.Document & {
   title: string;
   description: string;
   prompt: string;
+  goal: string;
+  userConversation?: UserConversation;
 };
 
 export enum SenderType {
@@ -37,7 +39,8 @@ export type UserConversation = Models.Document & {
   language: string;
   personalityId: string;
   isComplete: boolean;
-  conversation: Conversation;
+  conversationId: string;
+  prompt: string;
 };
 
 export type Personality = Models.Document & {

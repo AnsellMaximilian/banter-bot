@@ -11,15 +11,23 @@ export default function Conversation({
   return (
     <Link
       href="/app/conversation"
-      className="relative w-64 h-64 border-border border rounded-md p-4 flex flex-col hover:border-primary hover:bg-secondary cursor-pointer"
+      className="relative h-64 border-border border rounded-md p-4 flex flex-col hover:border-primary hover:bg-secondary cursor-pointer"
     >
       <div
         className={cn(
           "absolute right-0 top-4 rounded-l-full text-white px-2",
-          "bg-green-600"
+          conversation.userConversation
+            ? conversation.userConversation.isComplete
+              ? "bg-green-600"
+              : "bg-orange-600"
+            : "bg-secondary text-gray-400"
         )}
       >
-        Completed
+        {conversation.userConversation
+          ? conversation.userConversation.isComplete
+            ? "Completed"
+            : "In Progress"
+          : "Not Started"}
       </div>
       <h3 className="text-xl font-semibold text-center mt-auto">
         {conversation.title}
