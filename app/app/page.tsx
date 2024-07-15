@@ -1,11 +1,19 @@
 "use client";
 
-import { useUser } from "@/contexts/user/UserContext";
-import React from "react";
+import Conversation from "@/components/ui/learning-track/Conversation";
+import { exampleConversations } from "@/const/examples";
+import { Conversation as IConversation } from "@/type";
+import React, { useEffect } from "react";
 
 export default function AppPage() {
-  const { currentUser } = useUser();
-
-  console.log(currentUser);
-  return <div>page</div>;
+  return (
+    <div>
+      <h1 className="text-3xl font-semibold">Learning Track</h1>
+      <div className="flex flex-wrap gap-4 mt-8">
+        {exampleConversations.map((conversation, idx) => {
+          return <Conversation conversation={conversation as IConversation} />;
+        })}
+      </div>
+    </div>
+  );
 }

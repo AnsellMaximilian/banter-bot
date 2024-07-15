@@ -13,3 +13,8 @@ export type UserProfile = Models.Document & {
 export type User = Models.User<Models.Preferences> & {
   profile: UserProfile;
 };
+
+export type Conversation = Models.Document & {
+  title: string;
+  description: string;
+};
