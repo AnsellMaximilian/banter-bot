@@ -1,10 +1,13 @@
 import { Language } from "@/type";
 import { US, ES, BR, FR, DE, ID } from "country-flag-icons/react/3x2";
+import botIcon from "@/assets/icons/bot.svg";
+import settingsIcon from "@/assets/icons/settings.svg";
+import chatIcon from "@/assets/icons/chat.svg";
 
 export const sidebarItems = [
-  { label: "Conversations", href: "/app/dashboard" },
-  { label: "Personalities", href: "/app/personalities" },
-  { label: "Profile", href: "/app/settings" },
+  { label: "Conversations", href: "/app/dashboard", icon: chatIcon },
+  { label: "Personalities", href: "/app/personalities", icon: botIcon },
+  { label: "Profile", href: "/app/settings", icon: settingsIcon },
 ];
 
 export const languages: Language[] = [
