@@ -36,8 +36,13 @@ export default function AppPage() {
     <div className="p-4">
       <h1 className="text-3xl font-semibold">Learning Track</h1>
       <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mt-8">
-        {conversations.map((conversation, idx) => {
-          return <Conversation conversation={conversation as IConversation} />;
+        {conversations.map((conversation) => {
+          return (
+            <Conversation
+              conversation={conversation as IConversation}
+              key={conversation.$id}
+            />
+          );
         })}
       </div>
     </div>

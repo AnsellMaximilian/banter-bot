@@ -20,10 +20,13 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
         user.$id
       );
       setCurrentUser({ ...user, profile: userProfile });
+      console.log("logged in");
     } catch (error) {
       setCurrentUser(null);
+      console.log("logged out");
     } finally {
       setIsLoading(false);
+      console.log("Finished loading");
     }
   };
 
@@ -34,6 +37,7 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
 
   const logout = async () => {
     await account.deleteSession("current");
+    setCurrentUser(null);
   };
 
   useEffect(() => {

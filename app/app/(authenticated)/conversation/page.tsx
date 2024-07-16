@@ -4,6 +4,7 @@ import ChatBubble from "@/components/conversation/ChatBubble";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { exampleMessages } from "@/const/examples";
+import privateRoute from "@/hooks/privateRoute";
 import { config, databases } from "@/lib/appwrite";
 import { cn } from "@/lib/utils";
 import { Conversation, Message, SenderType } from "@/type";
@@ -11,7 +12,7 @@ import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { SendHorizonal } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-export default function Page() {
+function Page() {
   return (
     <div className="h-full flex flex-col">
       <header className="p-4 border-b-2 border-border">
@@ -45,3 +46,4 @@ export default function Page() {
     </div>
   );
 }
+export default Page;

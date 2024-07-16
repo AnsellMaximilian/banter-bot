@@ -8,7 +8,7 @@ function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <UserContextProvider>{children}</UserContextProvider>;
+  return <>{children}</>;
 }
 
-export default Layout;
+export default publicRoute(Layout);

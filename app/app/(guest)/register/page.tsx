@@ -28,6 +28,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { config, functions } from "@/lib/appwrite";
 import { ExecutionMethod } from "appwrite";
+import publicRoute from "@/hooks/publicRoute";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -35,7 +36,7 @@ const formSchema = z.object({
   password: z.string(),
 });
 
-export default function RegisterPage() {
+function RegisterPage() {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,7 +66,7 @@ export default function RegisterPage() {
 
     console.log(res);
     if (!res.errors) {
-      router.push("/app");
+      router.push("/app/dashboard");
     }
   }
   return (
@@ -132,3 +133,5 @@ export default function RegisterPage() {
     </div>
   );
 }
+
+export default publicRoute(RegisterPage);
