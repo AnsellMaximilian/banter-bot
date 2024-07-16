@@ -17,35 +17,12 @@ import { useSettings } from "@/contexts/settings/SettingsContext";
 import { languages } from "@/const";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useData } from "@/contexts/data/DataContext";
 
 export default function AppPage() {
-  const [conversations, setConversations] = useState<IConversation[]>([]);
   const { settings, setSettings } = useSettings();
+  const { conversations } = useData();
 
-  useEffect(() => {
-    (async () => {
-      const resConvos = await databases.listDocuments(
-        config.dbId,
-        config.conversationCollectionId
-      );
-
-      const resUserConvos = await databases.listDocuments(
-        config.dbId,
-        config.userConversationCollectionId
-      );
-      const conversations = resConvos.documents as IConversation[];
-      const userConversations = resUserConvos.documents as UserConversation[];
-      setConversations(
-        conversations.map((convo) => ({
-          ...convo,
-          userConversation: userConversations.find(
-            (uc) => uc.conversationId === convo.$id
-          ),
-        }))
-      );
-    })();
-  }, []);
-  console.log(settings);
   return (
     <div className="p-4">
       <div className="flex justify-between">
@@ -78,7 +55,7 @@ export default function AppPage() {
         </DropdownMenu>
       </div>
       <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mt-8">
-        {conversations.map((conversation) => {
+        {conversations.data.map((conversation) => {
           return (
             <Conversation
               conversation={conversation as IConversation}

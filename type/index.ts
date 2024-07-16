@@ -1,5 +1,6 @@
 import { Models } from "appwrite";
 import { FlagComponent } from "country-flag-icons/react/3x2";
+import { Dispatch, SetStateAction } from "react";
 
 export type ApiResponse<T> = {
   success: boolean;
@@ -61,4 +62,13 @@ export type Language = {
 
 export type Settings = {
   language: Language;
+};
+
+export type RemoteData<T> = {
+  data: T;
+  isLoading: boolean;
+};
+
+export type RemoteDataWithSetter<T> = RemoteData<T> & {
+  setData: Dispatch<SetStateAction<RemoteData<T>>>;
 };
