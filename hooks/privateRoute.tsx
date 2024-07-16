@@ -15,7 +15,7 @@ const privateRoute = <P extends object>(
       }
     }, [isLoading, currentUser, router]);
 
-    if (isLoading) {
+    if (isLoading || !currentUser) {
       return null;
     }
 

@@ -15,7 +15,7 @@ const publicRoute = <P extends object>(
       }
     }, [isLoading, currentUser, router]);
 
-    if (isLoading) {
+    if (isLoading || currentUser) {
       return <div>Loading</div>;
     }
 
