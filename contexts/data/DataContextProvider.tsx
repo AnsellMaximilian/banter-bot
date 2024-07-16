@@ -52,7 +52,7 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
 
       setConversations((prev) => ({
         ...prev,
-        conversations: conversations.map((convo) => ({
+        data: conversations.map((convo) => ({
           ...convo,
           userConversation: userConversations.find(
             (uc) => uc.conversationId === convo.$id
@@ -62,7 +62,7 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
 
       setPersonalities((prev) => ({
         ...prev,
-        personalities: personalities,
+        data: personalities,
       }));
       setRemoteDataLoading(setConversations, false);
       setRemoteDataLoading(setPersonalities, false);

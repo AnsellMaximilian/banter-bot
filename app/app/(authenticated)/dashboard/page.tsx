@@ -1,10 +1,6 @@
 "use client";
 
 import Conversation from "@/components/learning-track/Conversation";
-import { exampleConversations } from "@/const/examples";
-import { config, databases } from "@/lib/appwrite";
-import { Conversation as IConversation, UserConversation } from "@/type";
-import React, { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,6 +18,8 @@ import { useData } from "@/contexts/data/DataContext";
 export default function AppPage() {
   const { settings, setSettings } = useSettings();
   const { conversations } = useData();
+
+  console.log(conversations);
 
   return (
     <div className="p-4">
@@ -57,10 +55,7 @@ export default function AppPage() {
       <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mt-8">
         {conversations.data.map((conversation) => {
           return (
-            <Conversation
-              conversation={conversation as IConversation}
-              key={conversation.$id}
-            />
+            <Conversation conversation={conversation} key={conversation.$id} />
           );
         })}
       </div>

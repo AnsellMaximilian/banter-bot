@@ -2,7 +2,7 @@ import { Language } from "@/type";
 import { US, ES, BR, FR, DE, ID } from "country-flag-icons/react/3x2";
 
 export const sidebarItems = [
-  { label: "Conversations", href: "/app" },
+  { label: "Conversations", href: "/app/dashboard" },
   { label: "Personalities", href: "/app/personalities" },
   { label: "Profile", href: "/app/settings" },
 ];
