@@ -1,4 +1,5 @@
 import { Models } from "appwrite";
+import { FlagComponent } from "country-flag-icons/react/3x2";
 
 export type ApiResponse<T> = {
   success: boolean;
@@ -50,4 +51,14 @@ export type Personality = Models.Document & {
   persona: string;
   imageUrl: string;
   traits: string;
+};
+
+export type Language = {
+  locale: string;
+  readableName: string;
+  flag: FlagComponent;
+};
+
+export type Settings = {
+  language: Language;
 };
