@@ -29,6 +29,7 @@ import { useRouter } from "next/navigation";
 import { config, functions } from "@/lib/appwrite";
 import { ExecutionMethod } from "appwrite";
 import publicRoute from "@/hooks/publicRoute";
+import Link from "next/link";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -71,7 +72,7 @@ function RegisterPage() {
   }
   return (
     <div className="flex flex-col justify-center grow items-center">
-      <Card className="w-[600px] max-w-full">
+      <Card className="w-[500px] max-w-full">
         <CardHeader className="text-center">
           <Image
             src={logo}
@@ -125,11 +126,21 @@ function RegisterPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <div className="flex">
+                <Button type="submit" className="ml-auto">
+                  Register
+                </Button>{" "}
+              </div>
             </form>
           </Form>
         </CardContent>
       </Card>
+      <div className="mt-2">
+        Already have an account? Login{" "}
+        <Link href="/app/login" className="text-primary">
+          here
+        </Link>
+      </div>
     </div>
   );
 }

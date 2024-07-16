@@ -11,7 +11,7 @@ const privateRoute = <P extends object>(
 
     useEffect(() => {
       if (!isLoading && !currentUser) {
-        router.push("/register");
+        router.push("/app/login");
       }
     }, [isLoading, currentUser, router]);
 

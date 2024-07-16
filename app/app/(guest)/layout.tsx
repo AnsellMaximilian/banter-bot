@@ -8,7 +8,7 @@ function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return <div className="h-screen flex overflow-hidden">{children}</div>;
 }
 
 export default publicRoute(Layout);
