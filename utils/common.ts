@@ -75,6 +75,10 @@ Respond in the following format as JSON:
 {
  "message": "A string representing a message starting the conversation or responding to the most recent user message.",
  "isGoalReached": "a boolean representing whether or not the specified goal of the conversation has been reached. Make sure the user has replied a few times at least before determining goal is reached (true). Be immensly strict about this and only set to true once the history of messages is representative of reaching the specified goal.",
+ "mistakes": "if user message is not null, it should be string explaining what grammar/linguistic mistakes the user message has. If there are no mistakes or if user message is null, this should be null",
+ "correctedText": "if user message is not null and has mistakes, it should be string rewriting user message to be correct. If there are no mistakes or if user message is null, this should be null",
+ "explanation": "A string explaining in general grammar and linguistic concepts relating to either user message (if it has no mistakes) or the correctedText if it has any mistakes. If user message is null, this should be null.",
+ "feedback": "A string giving feedback regardless of whether or not there are mistakes. Just advice for improvement. If user message is null, this should be null"
 }
 `;
   return prompt;

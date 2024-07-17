@@ -36,26 +36,6 @@ export async function POST(request: NextRequest) {
       userConversationId
     );
 
-    // save user message
-    let savedUserMessage: Message | undefined = undefined;
-    if (userMessage) {
-      savedUserMessage = (await databases.createDocument(
-        config.dbId,
-        config.messageCollectionId,
-        ID.unique(),
-        {
-          userConversationId: userConversation.$id,
-          textContent: userMessage,
-          senderId: userConversation.userId,
-          senderType: SenderType.USER,
-        },
-        [
-          Permission.read(Role.user(userConversation.userId)),
-          Permission.update(Role.user(userConversation.userId)),
-        ]
-      )) as Message;
-    }
-
     // fetch message history relating to user conversation
     const resMessages = await databases.listDocuments(
       config.dbId,
@@ -73,7 +53,13 @@ export async function POST(request: NextRequest) {
     const history: Content[] = [
       {
         role: "user",
-        parts: [{ text: userConversation.prompt }],
+        parts: [
+          {
+            text: `${userConversation.prompt}
+            user message: ${userMessage ? `"${userMessage}"` : "null"}
+            `,
+          },
+        ],
       },
       ...sortedMessages.map((m) => {
         return {
@@ -91,6 +77,22 @@ export async function POST(request: NextRequest) {
         };
       }),
     ];
+
+    if (userMessage) {
+      history.push({
+        role: "user",
+        parts: [
+          {
+            text: `\`\`\`json
+          {
+            "message": ${userMessage},
+            "isGoalReached": false
+          }
+          \`\`\``,
+          },
+        ],
+      });
+    }
 
     console.log(JSON.stringify(history));
 
@@ -141,6 +143,30 @@ export async function POST(request: NextRequest) {
         Permission.update(Role.user(userConversation.userId)),
       ]
     )) as Message;
+
+    // save user message
+    let savedUserMessage: Message | undefined = undefined;
+    if (userMessage) {
+      savedUserMessage = (await databases.createDocument(
+        config.dbId,
+        config.messageCollectionId,
+        ID.unique(),
+        {
+          userConversationId: userConversation.$id,
+          textContent: userMessage,
+          senderId: userConversation.userId,
+          senderType: SenderType.USER,
+          mistakes: geminiCustomResponse.mistakes,
+          feedback: geminiCustomResponse.feedback,
+          explanation: geminiCustomResponse.explanation,
+          correctedText: geminiCustomResponse.correctedText,
+        },
+        [
+          Permission.read(Role.user(userConversation.userId)),
+          Permission.update(Role.user(userConversation.userId)),
+        ]
+      )) as Message;
+    }
 
     const response: CreateChatResponseBody = {
       userMessage: savedUserMessage || null,
