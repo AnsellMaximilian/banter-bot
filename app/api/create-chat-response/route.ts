@@ -102,6 +102,23 @@ export async function POST(request: NextRequest) {
       removeJsonEncasing(result.response.text())
     );
 
+    let updatedUserConversation: UserConversation | null = null;
+
+    if (geminiCustomResponse.isGoalReached) {
+      try {
+        updatedUserConversation = (await databases.updateDocument(
+          config.dbId,
+          config.userConversationCollectionId,
+          userConversation.$id,
+          {
+            isComplete: true,
+          }
+        )) as UserConversation;
+      } catch (error) {
+        updatedUserConversation = null;
+      }
+    }
+
     const savedBotMessage = (await databases.createDocument(
       config.dbId,
       config.messageCollectionId,
@@ -121,6 +138,7 @@ export async function POST(request: NextRequest) {
     const response: CreateChatResponseBody = {
       userMessage: savedUserMessage || null,
       botMessage: savedBotMessage,
+      updatedUserConversation: updatedUserConversation || userConversation,
     };
 
     return createSuccessResponse(response, "Message(s) created");

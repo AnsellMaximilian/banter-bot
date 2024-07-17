@@ -87,4 +87,5 @@ export type CreateChatRequestBody = {
 export type CreateChatResponseBody = {
   userMessage: Message | null;
   botMessage: Message;
+  updatedUserConversation: UserConversation;
 };

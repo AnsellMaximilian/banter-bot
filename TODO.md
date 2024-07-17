@@ -5,3 +5,6 @@
 - [ ] Display sent user message after user sends (currently Banter Bot waits for the AI reply before displaying both)
 - [ ] Show is typing loading animation when waiting for bot response
 - [x] Make message input a form to allow pressing enter key to submit
+- [ ] Make sure conversation isn't immediately completed
+- [ ] UI for completed conversations
+- [ ] Update conversation in data context after receiving it in chat page

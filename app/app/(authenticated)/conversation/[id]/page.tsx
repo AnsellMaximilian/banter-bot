@@ -113,14 +113,19 @@ function Page({
         );
 
         if (res.success) {
-          const messages = res.data!;
+          const data = res.data!;
           setMessages((prev) => {
             const msgs = prev.slice();
-            if (messages.userMessage) msgs.push(messages.userMessage);
-            msgs.push(messages.botMessage);
+            if (data.userMessage) msgs.push(data.userMessage);
+            msgs.push(data.botMessage);
 
             return msgs;
           });
+
+          const updatedUserConversation = data.updatedUserConversation;
+          setConversation((prev) =>
+            prev ? { ...prev, userConversation: updatedUserConversation } : null
+          );
         }
       } catch (error) {
       } finally {
