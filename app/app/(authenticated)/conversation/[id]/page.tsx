@@ -26,6 +26,12 @@ import { createChatResponse } from "@/services/createChatResponse";
 import Image from "next/image";
 import { languages } from "@/const";
 import { useData } from "@/contexts/data/DataContext";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 function Page({
   params: { id: userConversationId },
@@ -169,9 +175,29 @@ function Page({
               </p>
             </div>
 
-            <Button variant="ghost" className="ml-auto">
-              <language.flag className="w-10" />
-            </Button>
+            <div className="ml-auto flex items-center gap-2">
+              {conversation.userConversation.isComplete && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="bg-green-500 text-sm text-white px-3 rounded-full">
+                        Goal Reached
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        This conversation&apos;s goal has been reached, however
+                        you can still continue talking.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+
+              <Button variant="ghost" className="">
+                <language.flag className="w-10" />
+              </Button>
+            </div>
           </header>
           <ScrollArea className="grow overflow-y-auto bg-primary/5">
             <div className="flex flex-col gap-4 my-4">

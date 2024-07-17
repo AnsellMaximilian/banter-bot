@@ -36,10 +36,6 @@ export async function POST(request: NextRequest) {
       userConversationId
     );
 
-    if (userConversation.isComplete) {
-      return createErrorResponse("This conversation is already complete.");
-    }
-
     // save user message
     let savedUserMessage: Message | undefined = undefined;
     if (userMessage) {
