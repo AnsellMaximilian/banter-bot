@@ -1,6 +1,7 @@
 - [x] Margins for chat bubbles (left or right) to prevent it from taking up full width
 - [ ] Update isComplete userConversation status if AI/Gemini determines conversation goal fulfilled
 - [ ] feat: click on personality picture during chat to view personality details
-- [ ] Reset text input after sending message
+- [x] Reset text input after sending message
 - [ ] Display sent user message after user sends (currently Banter Bot waits for the AI reply before displaying both)
 - [ ] Show is typing loading animation when waiting for bot response
+- [x] Make message input a form to allow pressing enter key to submit

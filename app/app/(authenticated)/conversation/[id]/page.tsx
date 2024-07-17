@@ -176,15 +176,23 @@ function Page({
               })}
             </div>
           </ScrollArea>
-          <div className="p-4 flex gap-4 border-t-2 border-border">
+          <form
+            className="p-4 flex gap-4 border-t-2 border-border"
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendMessage();
+              setCurrentMessageText("");
+            }}
+          >
             <Input
               type="text"
+              value={currentMessageText}
               onChange={(e) => setCurrentMessageText(e.target.value)}
             />
-            <Button onClick={() => sendMessage()} disabled={isSending}>
+            <Button type="submit" disabled={isSending}>
               <SendHorizonal />
             </Button>
-          </div>
+          </form>
         </>
       ) : (
         <div>Loading</div>
