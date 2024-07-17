@@ -128,22 +128,6 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const savedBotMessage = (await databases.createDocument(
-      config.dbId,
-      config.messageCollectionId,
-      ID.unique(),
-      {
-        userConversationId: userConversation.$id,
-        textContent: geminiCustomResponse.message,
-        senderId: personalityId,
-        senderType: SenderType.BOT,
-      },
-      [
-        Permission.read(Role.user(userConversation.userId)),
-        Permission.update(Role.user(userConversation.userId)),
-      ]
-    )) as Message;
-
     // save user message
     let savedUserMessage: Message | undefined = undefined;
     if (userMessage) {
@@ -167,6 +151,22 @@ export async function POST(request: NextRequest) {
         ]
       )) as Message;
     }
+
+    const savedBotMessage = (await databases.createDocument(
+      config.dbId,
+      config.messageCollectionId,
+      ID.unique(),
+      {
+        userConversationId: userConversation.$id,
+        textContent: geminiCustomResponse.message,
+        senderId: personalityId,
+        senderType: SenderType.BOT,
+      },
+      [
+        Permission.read(Role.user(userConversation.userId)),
+        Permission.update(Role.user(userConversation.userId)),
+      ]
+    )) as Message;
 
     const response: CreateChatResponseBody = {
       userMessage: savedUserMessage || null,
