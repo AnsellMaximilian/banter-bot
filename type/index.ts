@@ -35,7 +35,8 @@ export type Message = Models.Document & {
   senderType: SenderType;
   userConversationId: string;
   mistakes?: string;
-  suggestions?: string;
+  correctedTextContent?: string;
+  explanation?: string;
   feedback?: string;
 };
 
