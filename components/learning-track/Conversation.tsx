@@ -1,6 +1,9 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { Conversation as IConversation } from "@/type";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 
 export default function Conversation({
@@ -10,9 +13,16 @@ export default function Conversation({
   conversation: IConversation;
   setSelectedConversation: Dispatch<SetStateAction<IConversation | null>>;
 }) {
+  const router = useRouter();
   return (
     <button
-      onClick={() => setSelectedConversation(conversation)}
+      onClick={() => {
+        if (conversation.userConversation) {
+          router.push(`/app/conversation/${conversation.userConversation.$id}`);
+        } else {
+          setSelectedConversation(conversation);
+        }
+      }}
       className="relative h-64 border-border border rounded-md p-4 flex flex-col hover:border-primary hover:bg-secondary cursor-pointer"
     >
       <div
