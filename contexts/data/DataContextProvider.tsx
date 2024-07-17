@@ -17,6 +17,8 @@ import {
   getRemoteDataWithSetter,
   setRemoteDataLoading,
 } from "@/utils/common";
+import { useSettings } from "../settings/SettingsContext";
+import { Query } from "appwrite";
 
 export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -27,6 +29,8 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
   const [personalities, setPersonalities] = useState<RemoteData<Personality[]>>(
     getDefaultRemoteData([])
   );
+
+  const { settings } = useSettings();
 
   useEffect(() => {
     (async () => {
@@ -39,7 +43,8 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
 
       const resUserConvos = await databases.listDocuments(
         config.dbId,
-        config.userConversationCollectionId
+        config.userConversationCollectionId,
+        [Query.equal("language", settings.language.locale)]
       );
 
       const resPersonalities = await databases.listDocuments(
@@ -67,7 +72,7 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
       setRemoteDataLoading(setConversations, false);
       setRemoteDataLoading(setPersonalities, false);
     })();
-  }, []);
+  }, [settings.language]);
 
   return (
     <DataContext.Provider

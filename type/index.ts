@@ -34,6 +34,9 @@ export type Message = Models.Document & {
   senderId: string;
   senderType: SenderType;
   userConversationId: string;
+  mistakes?: string;
+  suggestions?: string;
+  feedback?: string;
 };
 
 export type UserConversation = Models.Document & {
