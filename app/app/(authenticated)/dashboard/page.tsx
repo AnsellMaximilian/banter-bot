@@ -15,10 +15,42 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useData } from "@/contexts/data/DataContext";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
+import {
+  Conversation as IConversation,
+  Personality as IPersonality,
+} from "@/type";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
+import Personality from "@/components/personalities/Personality";
 
 export default function AppPage() {
   const { settings, setSettings } = useSettings();
-  const { conversations } = useData();
+  const { conversations, personalities } = useData();
+
+  const [selectedConversation, setSelectedConversation] =
+    useState<IConversation | null>(null);
+
+  const [selectedPersonality, setSelectedPersonality] =
+    useState<IPersonality | null>(null);
+
+  const createUserConversation = () => {};
 
   return (
     <div className="p-4">
@@ -61,10 +93,67 @@ export default function AppPage() {
                 <Conversation
                   conversation={conversation}
                   key={conversation.$id}
+                  setSelectedConversation={setSelectedConversation}
                 />
               );
             })}
       </div>
+      <Dialog
+        open={!!selectedConversation}
+        onOpenChange={(open) => {
+          if (!open) setSelectedConversation(null);
+        }}
+      >
+        <DialogContent className="w-[600px] md:w-[1024px] max-w-full">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">
+              {selectedConversation
+                ? selectedConversation.title
+                : "Loading conversation..."}
+            </DialogTitle>
+            <DialogDescription className="text-xl">
+              {selectedConversation
+                ? `${selectedConversation.description}`
+                : "Loading conversation..."}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col md:flex-row gap-8 py-4">
+            <div className="">
+              <Label htmlFor="personality" className="block mb-2">
+                Select a Personality
+              </Label>
+              <Select
+                onValueChange={(id) =>
+                  setSelectedPersonality(
+                    personalities.data.find((p) => p.$id === id) || null
+                  )
+                }
+              >
+                <SelectTrigger className="w-[250px]" id="personality">
+                  <SelectValue placeholder="Select a personality" />
+                </SelectTrigger>
+                <SelectContent className="">
+                  <SelectGroup>
+                    {personalities.data.map((p) => (
+                      <SelectItem key={p.$id} value={p.$id}>
+                        {p.name} - {p.persona}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              {selectedPersonality && (
+                <Personality personality={selectedPersonality} />
+              )}
+            </div>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => {}}>Start Conversation</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

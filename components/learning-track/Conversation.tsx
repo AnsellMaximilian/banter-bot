@@ -1,16 +1,18 @@
 import { cn } from "@/lib/utils";
 import { Conversation as IConversation } from "@/type";
 import Link from "next/link";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export default function Conversation({
   conversation,
+  setSelectedConversation,
 }: {
   conversation: IConversation;
+  setSelectedConversation: Dispatch<SetStateAction<IConversation | null>>;
 }) {
   return (
-    <Link
-      href="/app/conversation"
+    <button
+      onClick={() => setSelectedConversation(conversation)}
       className="relative h-64 border-border border rounded-md p-4 flex flex-col hover:border-primary hover:bg-secondary cursor-pointer"
     >
       <div
@@ -33,6 +35,6 @@ export default function Conversation({
         {conversation.title}
       </h3>
       <p className="text-center text-sm mt-2">{conversation.description}</p>
-    </Link>
+    </button>
   );
 }
