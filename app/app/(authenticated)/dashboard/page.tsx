@@ -14,12 +14,11 @@ import { languages } from "@/const";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useData } from "@/contexts/data/DataContext";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function AppPage() {
   const { settings, setSettings } = useSettings();
   const { conversations } = useData();
-
-  console.log(conversations);
 
   return (
     <div className="p-4">
@@ -53,11 +52,18 @@ export default function AppPage() {
         </DropdownMenu>
       </div>
       <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 mt-8">
-        {conversations.data.map((conversation) => {
-          return (
-            <Conversation conversation={conversation} key={conversation.$id} />
-          );
-        })}
+        {conversations.isLoading
+          ? Array.from({ length: 10 }).map((_, i) => (
+              <Skeleton className="h-64 rounded-md" key={i} />
+            ))
+          : conversations.data.map((conversation) => {
+              return (
+                <Conversation
+                  conversation={conversation}
+                  key={conversation.$id}
+                />
+              );
+            })}
       </div>
     </div>
   );
