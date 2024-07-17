@@ -19,6 +19,7 @@ import { useState } from "react";
 import {
   Conversation as IConversation,
   Personality as IPersonality,
+  UserConversation,
 } from "@/type";
 import {
   Dialog,
@@ -39,10 +40,18 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import Personality from "@/components/personalities/Personality";
+import { useUser } from "@/contexts/user/UserContext";
+import { generateUserConversationPrompt } from "@/utils/common";
+import { config, databases } from "@/lib/appwrite";
+import { ID } from "appwrite";
+import { useRouter } from "next/navigation";
 
 export default function AppPage() {
   const { settings, setSettings } = useSettings();
   const { conversations, personalities } = useData();
+  const { currentUser } = useUser();
+
+  const router = useRouter();
 
   const [selectedConversation, setSelectedConversation] =
     useState<IConversation | null>(null);
@@ -50,7 +59,33 @@ export default function AppPage() {
   const [selectedPersonality, setSelectedPersonality] =
     useState<IPersonality | null>(null);
 
-  const createUserConversation = () => {};
+  const createUserConversation = async () => {
+    if (currentUser && selectedConversation && selectedPersonality) {
+      try {
+        const body = {
+          userId: currentUser.$id,
+          personalityId: selectedPersonality.$id,
+          language: settings.language.locale,
+          isComplete: false,
+          conversationId: selectedConversation.$id,
+          prompt: generateUserConversationPrompt(
+            selectedConversation,
+            selectedPersonality
+          ),
+        };
+
+        const createdUserConversation: UserConversation =
+          await databases.createDocument(
+            config.dbId,
+            config.userConversationCollectionId,
+            ID.unique(),
+            body
+          );
+
+        router.push(`/app/conversation/${createdUserConversation.$id}`);
+      } catch (error) {}
+    }
+  };
 
   return (
     <div className="p-4">
@@ -150,7 +185,13 @@ export default function AppPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={() => {}}>Start Conversation</Button>
+            <Button
+              onClick={() => {
+                createUserConversation();
+              }}
+            >
+              Start Conversation
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

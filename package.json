@@ -10,6 +10,7 @@
     "update-functions": "git add functions/** && git commit -m \"update function\" && git push origin main"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.15.0",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
@@ -20,12 +21,14 @@
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "appwrite": "^15.0.0",
+    "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "country-flag-icons": "^1.5.13",
     "embla-carousel-react": "^8.1.6",
     "lucide-react": "^0.407.0",
     "next": "14.2.5",
+    "node-appwrite": "^13.0.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.52.1",

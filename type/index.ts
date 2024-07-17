@@ -31,7 +31,7 @@ export enum SenderType {
 
 export type Message = Models.Document & {
   textContent: string;
-  sender: string;
+  senderId: string;
   senderType: SenderType;
   userConversationId: string;
 };
@@ -71,4 +71,20 @@ export type RemoteData<T> = {
 
 export type RemoteDataWithSetter<T> = RemoteData<T> & {
   setData: Dispatch<SetStateAction<RemoteData<T>>>;
+};
+
+export type GeminiMessageResponse = {
+  message: string;
+  isGoalReached: boolean;
+};
+
+export type CreateChatRequestBody = {
+  userConversationId: string;
+  userMessage?: string;
+  personalityId: string;
+};
+
+export type CreateChatResponseBody = {
+  userMessage: Message | null;
+  botMessage: Message;
 };

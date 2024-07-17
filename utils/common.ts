@@ -1,4 +1,10 @@
-import { ApiResponse, RemoteData, RemoteDataWithSetter } from "@/type";
+import {
+  ApiResponse,
+  Conversation,
+  Personality,
+  RemoteData,
+  RemoteDataWithSetter,
+} from "@/type";
 import { Dispatch, SetStateAction } from "react";
 
 export function removeJsonEncasing(text: string) {
@@ -51,4 +57,25 @@ export function setRemoteDataLoading<T>(
   value: boolean
 ) {
   setter((prev) => ({ ...prev, isLoading: value }));
+}
+
+export function generateUserConversationPrompt(
+  conversation: Conversation,
+  personality: Personality
+): string {
+  const prompt = `${personality.prompt}
+
+You are ${personality.traits}
+
+${conversation.prompt}
+
+The goal of this conversation is: ${conversation.goal}
+
+Respond in the following format:
+{
+ "message": "A string representing a message starting the conversation or responding to the most recent user message.",
+ "isGoalReached": "a boolean representing whether or not the specified goal has been reached.",
+}
+`;
+  return prompt;
 }
