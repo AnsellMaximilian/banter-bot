@@ -8,8 +8,8 @@ export default function ChatBubble({ message }: { message: Message }) {
       className={cn(
         "p-4 rounded-md shadow-md",
         message.senderType === SenderType.USER
-          ? "bg-white"
-          : "bg-primary text-white"
+          ? "bg-white ml-16"
+          : "bg-primary text-white mr-16"
       )}
     >
       {message.textContent}
