@@ -7,4 +7,5 @@
 - [x] Make message input a form to allow pressing enter key to submit
 - [ ] Make sure conversation isn't immediately completed
 - [ ] UI for completed conversations
-- [ ] Update conversation in data context after receiving it in chat page
+- [x] Update conversation in data context after receiving it in chat page
+- [ ] Include user name in chat prompt

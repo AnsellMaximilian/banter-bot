@@ -40,6 +40,26 @@ export async function POST(request: NextRequest) {
       return createErrorResponse("This conversation is already complete.");
     }
 
+    // save user message
+    let savedUserMessage: Message | undefined = undefined;
+    if (userMessage) {
+      savedUserMessage = (await databases.createDocument(
+        config.dbId,
+        config.messageCollectionId,
+        ID.unique(),
+        {
+          userConversationId: userConversation.$id,
+          textContent: userMessage,
+          senderId: userConversation.userId,
+          senderType: SenderType.USER,
+        },
+        [
+          Permission.read(Role.user(userConversation.userId)),
+          Permission.update(Role.user(userConversation.userId)),
+        ]
+      )) as Message;
+    }
+
     // fetch message history relating to user conversation
     const resMessages = await databases.listDocuments(
       config.dbId,
@@ -67,25 +87,7 @@ export async function POST(request: NextRequest) {
       }),
     ];
 
-    // save user message
-    let savedUserMessage: Message | undefined = undefined;
-    if (userMessage) {
-      savedUserMessage = (await databases.createDocument(
-        config.dbId,
-        config.messageCollectionId,
-        ID.unique(),
-        {
-          userConversationId: userConversation.$id,
-          textContent: userMessage,
-          senderId: userConversation.userId,
-          senderType: SenderType.USER,
-        },
-        [
-          Permission.read(Role.user(userConversation.userId)),
-          Permission.update(Role.user(userConversation.userId)),
-        ]
-      )) as Message;
-    }
+    console.log(JSON.stringify(history));
 
     // ask for response by Gemini
     const chatSession = geminiModel.startChat({

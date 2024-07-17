@@ -25,6 +25,7 @@ import axios from "axios";
 import { createChatResponse } from "@/services/createChatResponse";
 import Image from "next/image";
 import { languages } from "@/const";
+import { useData } from "@/contexts/data/DataContext";
 
 function Page({
   params: { id: userConversationId },
@@ -33,6 +34,8 @@ function Page({
 }) {
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [personality, setPersonality] = useState<IPersonality | null>(null);
+
+  const { conversations } = useData();
 
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -126,6 +129,14 @@ function Page({
           setConversation((prev) =>
             prev ? { ...prev, userConversation: updatedUserConversation } : null
           );
+          conversations.setData((prev) => ({
+            ...prev,
+            data: prev.data.map((c) =>
+              c.$id === updatedUserConversation.conversationId
+                ? { ...c, userConversation: updatedUserConversation }
+                : c
+            ),
+          }));
         }
       } catch (error) {
       } finally {
