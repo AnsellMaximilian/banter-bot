@@ -82,7 +82,16 @@ export async function POST(request: NextRequest) {
       ...sortedMessages.map((m) => {
         return {
           role: m.senderType === SenderType.USER ? "user" : "model",
-          parts: [{ text: m.textContent }],
+          parts: [
+            {
+              text: `\`\`\`json
+            {
+              "message": ${m.textContent},
+              "isGoalReached": false
+            }
+            \`\`\``,
+            },
+          ],
         };
       }),
     ];

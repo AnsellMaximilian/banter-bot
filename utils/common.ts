@@ -71,7 +71,7 @@ ${conversation.prompt}
 
 goal of the conversation: ${conversation.goal}
 
-Respond in the following format:
+Respond in the following format as JSON:
 {
  "message": "A string representing a message starting the conversation or responding to the most recent user message.",
  "isGoalReached": "a boolean representing whether or not the specified goal of the conversation has been reached. Make sure the user has replied a few times at least before determining goal is reached (true). Be immensly strict about this and only set to true once the history of messages is representative of reaching the specified goal.",
