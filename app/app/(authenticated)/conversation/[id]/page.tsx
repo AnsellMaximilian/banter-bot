@@ -39,6 +39,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import Feedback from "@/components/conversation/Feedback";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 function Page({
   params: { id: userConversationId },
@@ -51,6 +53,8 @@ function Page({
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
   const { conversations } = useData();
+
+  const { toast } = useToast();
 
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -109,6 +113,13 @@ function Page({
 
               return msgs;
             });
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Error",
+              description: res.message,
+              action: <ToastAction altText="Try again">Try again</ToastAction>,
+            });
           }
         }
       } catch (error) {
@@ -152,6 +163,13 @@ function Page({
                 : c
             ),
           }));
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            action: <ToastAction altText="Try again">Try again</ToastAction>,
+          });
         }
       } catch (error) {
       } finally {

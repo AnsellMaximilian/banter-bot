@@ -16,7 +16,7 @@ import {
   removeJsonEncasing,
 } from "@/utils/common";
 import { geminiModel, generationConfig } from "@/utils/getGemini";
-import { Content } from "@google/generative-ai";
+import { Content, GoogleGenerativeAIError } from "@google/generative-ai";
 import { Query } from "appwrite";
 import { NextRequest } from "next/server";
 import { ID, Permission, Role } from "node-appwrite";
@@ -35,6 +35,26 @@ export async function POST(request: NextRequest) {
       config.userConversationCollectionId,
       userConversationId
     );
+
+    // save user message
+    let savedUserMessage: Message | undefined = undefined;
+    if (userMessage) {
+      savedUserMessage = (await databases.createDocument(
+        config.dbId,
+        config.messageCollectionId,
+        ID.unique(),
+        {
+          userConversationId: userConversation.$id,
+          textContent: userMessage,
+          senderId: userConversation.userId,
+          senderType: SenderType.USER,
+        },
+        [
+          Permission.read(Role.user(userConversation.userId)),
+          Permission.update(Role.user(userConversation.userId)),
+        ]
+      )) as Message;
+    }
 
     // fetch message history relating to user conversation
     const resMessages = await databases.listDocuments(
@@ -94,7 +114,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    console.log(JSON.stringify(history));
+    // console.log(JSON.stringify(history));
 
     // ask for response by Gemini
     const chatSession = geminiModel.startChat({
@@ -128,27 +148,18 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // save user message
-    let savedUserMessage: Message | undefined = undefined;
-    if (userMessage) {
-      savedUserMessage = (await databases.createDocument(
+    // update user message
+    if (savedUserMessage) {
+      savedUserMessage = (await databases.updateDocument(
         config.dbId,
         config.messageCollectionId,
-        ID.unique(),
+        savedUserMessage.$id,
         {
-          userConversationId: userConversation.$id,
-          textContent: userMessage,
-          senderId: userConversation.userId,
-          senderType: SenderType.USER,
           mistakes: geminiCustomResponse.mistakes,
           feedback: geminiCustomResponse.feedback,
           explanation: geminiCustomResponse.explanation,
           correctedText: geminiCustomResponse.correctedText,
-        },
-        [
-          Permission.read(Role.user(userConversation.userId)),
-          Permission.update(Role.user(userConversation.userId)),
-        ]
+        }
       )) as Message;
     }
 
@@ -176,8 +187,11 @@ export async function POST(request: NextRequest) {
 
     return createSuccessResponse(response, "Message(s) created");
   } catch (err) {
-    return createErrorResponse(
-      err instanceof Error ? err.message : "Unknown error"
-    );
+    console.log(err);
+    let errorMsg = "Unkown Error";
+    if (err instanceof GoogleGenerativeAIError)
+      errorMsg = "Gemini encountered some error. Please try again.";
+    else if (err instanceof Error) errorMsg = err.message;
+    return createErrorResponse(errorMsg);
   }
 }
