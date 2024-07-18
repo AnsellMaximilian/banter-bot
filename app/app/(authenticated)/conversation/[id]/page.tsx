@@ -3,8 +3,14 @@
 import ChatBubble from "@/components/conversation/ChatBubble";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { exampleMessages } from "@/const/examples";
-import privateRoute from "@/hooks/privateRoute";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { config, databases } from "@/lib/appwrite";
 import { cn } from "@/lib/utils";
 import {
@@ -32,6 +38,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import Feedback from "@/components/conversation/Feedback";
 
 function Page({
   params: { id: userConversationId },
@@ -40,6 +47,8 @@ function Page({
 }) {
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [personality, setPersonality] = useState<IPersonality | null>(null);
+
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
   const { conversations } = useData();
 
@@ -150,6 +159,9 @@ function Page({
       }
     }
   };
+
+  const selectMessage = (msg: Message) => setSelectedMessage(msg);
+
   const language: Language | undefined = languages.find(
     (l) => l.locale === conversation?.userConversation?.language
   );
@@ -212,7 +224,10 @@ function Page({
                         : "justify-start"
                     )}
                   >
-                    <ChatBubble message={message as Message} />
+                    <ChatBubble
+                      message={message as Message}
+                      select={selectMessage}
+                    />
                   </div>
                 );
               })}
@@ -235,6 +250,31 @@ function Page({
               <SendHorizonal />
             </Button>
           </form>
+          <Dialog
+            open={!!selectedMessage}
+            onOpenChange={(open) => {
+              if (!open) setSelectedMessage(null);
+            }}
+          >
+            <DialogContent className="w-[600px] md:w-[750px] max-w-full">
+              <DialogHeader>
+                <DialogTitle className="">Feedback</DialogTitle>
+                <DialogDescription className="">
+                  Feedback on the message you sent.
+                </DialogDescription>
+              </DialogHeader>
+              {selectedMessage && <Feedback message={selectedMessage} />}
+              <DialogFooter>
+                <Button
+                  onClick={() => {
+                    setSelectedMessage(null);
+                  }}
+                >
+                  Got It
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </>
       ) : (
         <div>Loading</div>

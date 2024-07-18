@@ -3,8 +3,19 @@ import { Message, SenderType } from "@/type";
 import React from "react";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 
-export default function ChatBubble({ message }: { message: Message }) {
+export default function ChatBubble({
+  message,
+  select,
+}: {
+  message: Message;
+  select: (msg: Message) => void;
+}) {
   const isFromUser = message.senderType === SenderType.USER;
+  const hasFeedback =
+    message.feedback ||
+    message.mistakes ||
+    message.correctedText ||
+    message.explanation;
   return (
     <div
       className={cn(
@@ -12,8 +23,11 @@ export default function ChatBubble({ message }: { message: Message }) {
         isFromUser ? "bg-white ml-16" : "bg-primary text-white mr-16"
       )}
     >
-      {isFromUser && (
-        <IoMdInformationCircleOutline className="absolute top-2 right-2 text-red-600 cursor-pointer animate-pulse" />
+      {isFromUser && hasFeedback && (
+        <IoMdInformationCircleOutline
+          className="absolute top-2 right-2 text-red-600 cursor-pointer animate-pulse"
+          onClick={() => select(message)}
+        />
       )}
 
       <span>{message.textContent}</span>
