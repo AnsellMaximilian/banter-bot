@@ -15,8 +15,6 @@ import { config, databases } from "@/lib/appwrite";
 import { cn } from "@/lib/utils";
 import {
   Conversation,
-  CreateChatRequestBody,
-  CreateChatResponseBody,
   Message,
   Personality as IPersonality,
   SenderType,
@@ -41,6 +39,8 @@ import {
 import Feedback from "@/components/conversation/Feedback";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
+import { Progress } from "@/components/ui/progress";
+import { delay, getConversationLoadingMessage } from "@/utils/common";
 
 function Page({
   params: { id: userConversationId },
@@ -64,6 +64,8 @@ function Page({
 
   const [currentMessageText, setCurrentMessageText] = useState("");
 
+  const [loadProgress, setLoadProgress] = useState<0 | 1 | 2 | 3 | 4>(0);
+
   useEffect(() => {
     (async () => {
       try {
@@ -74,17 +76,23 @@ function Page({
           userConversationId
         )) as UserConversation;
 
+        setLoadProgress(1);
+
         const conversation = (await databases.getDocument(
           config.dbId,
           config.conversationCollectionId,
           userConversation.conversationId
         )) as Conversation;
 
+        setLoadProgress(2);
+
         const personality = (await databases.getDocument(
           config.dbId,
           config.personalityCollectionId,
           userConversation.personalityId
         )) as IPersonality;
+
+        setLoadProgress(3);
 
         const messages = (
           await databases.listDocuments(
@@ -93,6 +101,9 @@ function Page({
             [Query.equal("userConversationId", userConversationId)]
           )
         ).documents as Message[];
+        setLoadProgress(4);
+        await delay(500);
+        setIsLoadingData(false);
 
         setConversation({ ...conversation, userConversation });
         setMessages(messages);
@@ -131,7 +142,12 @@ function Page({
   }, []);
 
   const sendMessage = async () => {
-    if (conversation && conversation.userConversation && currentMessageText) {
+    if (
+      conversation &&
+      conversation.userConversation &&
+      currentMessageText &&
+      !isLoadingData
+    ) {
       try {
         setIsSending(true);
 
@@ -295,7 +311,15 @@ function Page({
           </Dialog>
         </>
       ) : (
-        <div>Loading</div>
+        <div className="grow flex flex-col items-center justify-center">
+          <div className="text-center text-xl mb-2 font-light">
+            {getConversationLoadingMessage(loadProgress)}
+          </div>
+          <Progress
+            value={(loadProgress / 4) * 100}
+            className="w-[600px] max-w-full"
+          />
+        </div>
       )}
     </div>
   );

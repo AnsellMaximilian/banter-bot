@@ -83,3 +83,28 @@ Respond in the following format as JSON:
 `;
   return prompt;
 }
+
+export function getConversationLoadingMessage(progress: 0 | 1 | 2 | 3 | 4) {
+  switch (progress) {
+    case 0:
+      return "Loading user conversation...";
+    case 1:
+      return "Loading conversation...";
+    case 2:
+      return "Loading AI personality...";
+    case 3:
+      return "Loading messages...";
+
+    case 4:
+      return "Loading complete.";
+
+      break;
+
+    default:
+      break;
+  }
+}
+
+export function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
