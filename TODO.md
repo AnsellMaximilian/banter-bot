@@ -9,3 +9,5 @@
 - [ ] UI for completed conversations
 - [x] Update conversation in data context after receiving it in chat page
 - [ ] Include user name in chat prompt
+- [ ] Add auth loader
+- [ ] Add conversation loader
