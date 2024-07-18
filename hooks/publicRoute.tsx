@@ -1,3 +1,4 @@
+import Loader from "@/components/Loader";
 import { useUser } from "@/contexts/user/UserContext";
 import { useRouter } from "next/navigation";
 import { ComponentType, useEffect } from "react";
@@ -16,7 +17,7 @@ const publicRoute = <P extends object>(
     }, [isLoading, currentUser, router]);
 
     if (isLoading || currentUser) {
-      return <div>Loading</div>;
+      return null;
     }
 
     return <WrappedComponent {...props} />;

@@ -3,6 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { UserContext } from "./UserContext";
 import { Loader2 } from "lucide-react";
 import { User, UserProfile } from "@/type";
+import Loader from "@/components/Loader";
 
 export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -51,7 +52,7 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
         logout,
       }}
     >
-      {isLoading && <Loader2 />}
+      {isLoading && <Loader />}
       {isLoading === false && <>{children}</>}
     </UserContext.Provider>
   );
