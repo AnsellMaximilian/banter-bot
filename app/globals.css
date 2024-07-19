@@ -57,3 +57,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  @keyframes typing {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  }
+
+  .typing {
+    animation: typing 1s infinite;
+  }
+}

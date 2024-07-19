@@ -87,8 +87,8 @@ export type GeminiMessageResponse = {
 
 export type CreateChatRequestBody = {
   userConversationId: string;
-  userMessage?: string;
   personalityId: string;
+  messageId?: string;
 };
 
 export type CreateChatResponseBody = {

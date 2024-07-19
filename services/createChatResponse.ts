@@ -8,12 +8,12 @@ import axios from "axios";
 export const createChatResponse = async (
   personalityId: string,
   userConversationId: string,
-  userMessage?: string
+  messageId?: string
 ) => {
   const body: CreateChatRequestBody = {
     personalityId: personalityId,
     userConversationId: userConversationId,
-    userMessage,
+    messageId,
   };
   const res = await axios.post("/api/create-chat-response", body);
   const messages = res.data as ApiResponse<CreateChatResponseBody>;

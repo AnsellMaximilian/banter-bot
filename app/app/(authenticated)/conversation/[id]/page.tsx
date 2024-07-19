@@ -22,7 +22,7 @@ import {
   Language,
 } from "@/type";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
-import { Query } from "appwrite";
+import { ID, Permission, Query, Role } from "appwrite";
 import { SendHorizonal } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -61,6 +61,7 @@ function Page({
   const [isLoadingData, setIsLoadingData] = useState(false);
 
   const [isSending, setIsSending] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currentMessageText, setCurrentMessageText] = useState("");
 
@@ -149,19 +150,38 @@ function Page({
       !isLoadingData
     ) {
       try {
+        setIsLoading(true);
+        const savedUserMessage = (await databases.createDocument(
+          config.dbId,
+          config.messageCollectionId,
+          ID.unique(),
+          {
+            userConversationId: conversation.userConversation.$id,
+            textContent: currentMessageText,
+            senderId: conversation.userConversation.userId,
+            senderType: SenderType.USER,
+          },
+          [
+            Permission.read(Role.user(conversation.userConversation.userId)),
+            Permission.update(Role.user(conversation.userConversation.userId)),
+          ]
+        )) as Message;
+
+        setMessages((prev) => [...prev, savedUserMessage]);
+        setIsLoading(false);
+
         setIsSending(true);
 
         const res = await createChatResponse(
           conversation.userConversation.personalityId,
           conversation.userConversation.$id,
-          currentMessageText
+          savedUserMessage.$id
         );
 
         if (res.success) {
           const data = res.data!;
           setMessages((prev) => {
             const msgs = prev.slice();
-            if (data.userMessage) msgs.push(data.userMessage);
             msgs.push(data.botMessage);
 
             return msgs;
@@ -194,7 +214,7 @@ function Page({
     }
   };
 
-  const selectMessage = (msg: Message) => setSelectedMessage(msg);
+  const selectMessage = (msg: Message | null) => setSelectedMessage(msg);
 
   const language: Language | undefined = languages.find(
     (l) => l.locale === conversation?.userConversation?.language
@@ -265,6 +285,11 @@ function Page({
                   </div>
                 );
               })}
+              {isSending && (
+                <div className={cn("flex px-4 justify-start")}>
+                  <ChatBubble select={selectMessage} />{" "}
+                </div>
+              )}
             </div>
           </ScrollArea>
           <form
@@ -280,7 +305,7 @@ function Page({
               value={currentMessageText}
               onChange={(e) => setCurrentMessageText(e.target.value)}
             />
-            <Button type="submit" disabled={isSending}>
+            <Button type="submit" disabled={isSending || isLoading}>
               <SendHorizonal />
             </Button>
           </form>

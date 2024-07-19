@@ -25,36 +25,26 @@ export async function POST(request: NextRequest) {
   // body contains userConversationId
   const body: CreateChatRequestBody = await request.json();
   const userConversationId = body.userConversationId;
-  const userMessage = body.userMessage;
   const personalityId = body.personalityId;
+  const messageId = body.messageId;
 
   try {
+    let userMessage: Message | null = null;
+    // get message
+    if (messageId) {
+      userMessage = (await databases.getDocument(
+        config.dbId,
+        config.messageCollectionId,
+        messageId
+      )) as Message;
+    }
+
     // fetch user conversation
     const userConversation: UserConversation = await databases.getDocument(
       config.dbId,
       config.userConversationCollectionId,
       userConversationId
     );
-
-    // save user message
-    let savedUserMessage: Message | undefined = undefined;
-    if (userMessage) {
-      savedUserMessage = (await databases.createDocument(
-        config.dbId,
-        config.messageCollectionId,
-        ID.unique(),
-        {
-          userConversationId: userConversation.$id,
-          textContent: userMessage,
-          senderId: userConversation.userId,
-          senderType: SenderType.USER,
-        },
-        [
-          Permission.read(Role.user(userConversation.userId)),
-          Permission.update(Role.user(userConversation.userId)),
-        ]
-      )) as Message;
-    }
 
     // fetch message history relating to user conversation
     const resMessages = await databases.listDocuments(
@@ -125,7 +115,7 @@ export async function POST(request: NextRequest) {
     });
 
     const result = await chatSession.sendMessage(
-      userMessage ? userMessage : "start the conversation"
+      userMessage ? userMessage.textContent : "start the conversation"
     );
     const geminiCustomResponse: GeminiMessageResponse = JSON.parse(
       removeJsonEncasing(result.response.text())
@@ -149,11 +139,11 @@ export async function POST(request: NextRequest) {
     }
 
     // update user message
-    if (savedUserMessage) {
-      savedUserMessage = (await databases.updateDocument(
+    if (userMessage) {
+      userMessage = (await databases.updateDocument(
         config.dbId,
         config.messageCollectionId,
-        savedUserMessage.$id,
+        userMessage.$id,
         {
           mistakes: geminiCustomResponse.mistakes,
           feedback: geminiCustomResponse.feedback,
@@ -180,7 +170,7 @@ export async function POST(request: NextRequest) {
     )) as Message;
 
     const response: CreateChatResponseBody = {
-      userMessage: savedUserMessage || null,
+      userMessage: userMessage || null,
       botMessage: savedBotMessage,
       updatedUserConversation: updatedUserConversation || userConversation,
     };

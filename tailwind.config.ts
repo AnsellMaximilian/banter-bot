@@ -23,6 +23,9 @@ const config = {
       fontFamily: {
         sans: [...fontFamily.sans],
       },
+      transitionDelay: {
+        "250": "250ms",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
