@@ -33,6 +33,23 @@ export default function ChatBubble({
         isFromUser ? "bg-white ml-16" : "bg-primary text-white mr-16"
       )}
     >
+      <div
+        className={cn(
+          "absolute",
+          isFromUser
+            ? "rotate-[135deg] -right-2 -bottom-2"
+            : "rotate-[-135deg] -left-2 -bottom-2"
+        )}
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          className={cn(isFromUser ? "fill-white" : "fill-primary")}
+        >
+          <polygon points="10,0 20,20 0,20" />
+        </svg>
+      </div>
       {isFromUser && hasFeedback && message && (
         <IoMdInformationCircleOutline
           className="absolute top-2 right-2 text-red-600 cursor-pointer animate-pulse"
