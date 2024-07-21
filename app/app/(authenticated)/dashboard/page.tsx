@@ -70,7 +70,8 @@ export default function AppPage() {
           conversationId: selectedConversation.$id,
           prompt: generateUserConversationPrompt(
             selectedConversation,
-            selectedPersonality
+            selectedPersonality,
+            currentUser.profile.username
           ),
         };
 

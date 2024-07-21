@@ -111,6 +111,7 @@ function Page({
         setPersonality(personality);
 
         if (messages.length <= 0) {
+          setIsSending(true);
           const res = await createChatResponse(
             userConversation.personalityId,
             userConversation.$id
@@ -133,6 +134,7 @@ function Page({
               action: <ToastAction altText="Try again">Try again</ToastAction>,
             });
           }
+          setIsSending(false);
         }
       } catch (error) {
         console.log(error);
@@ -178,16 +180,23 @@ function Page({
           savedUserMessage.$id
         );
 
-        if (res.success) {
-          const data = res.data!;
+        if (res.success && res.data) {
           setMessages((prev) => {
             const msgs = prev.slice();
-            msgs.push(data.botMessage);
+            msgs.push(res.data!.botMessage);
+
+            if (res.data!.userMessage != null) {
+              return msgs.map((msg) =>
+                msg.$id === res.data!.userMessage?.$id
+                  ? res.data!.userMessage
+                  : msg
+              );
+            }
 
             return msgs;
           });
 
-          const updatedUserConversation = data.updatedUserConversation;
+          const updatedUserConversation = res.data.updatedUserConversation;
           setConversation((prev) =>
             prev ? { ...prev, userConversation: updatedUserConversation } : null
           );
@@ -336,13 +345,13 @@ function Page({
           </Dialog>
         </>
       ) : (
-        <div className="grow flex flex-col items-center justify-center">
+        <div className="grow flex flex-col items-center justify-center max-w-full">
           <div className="text-center text-xl mb-2 font-light">
             {getConversationLoadingMessage(loadProgress)}
           </div>
           <Progress
             value={(loadProgress / 4) * 100}
-            className="w-[600px] max-w-full"
+            className="w-3/4 max-w-full mx-8"
           />
         </div>
       )}

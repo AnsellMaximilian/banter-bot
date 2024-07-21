@@ -13,6 +13,7 @@ import {
 import {
   createErrorResponse,
   createSuccessResponse,
+  geminiResHasExtras,
   removeJsonEncasing,
 } from "@/utils/common";
 import { geminiModel, generationConfig } from "@/utils/getGemini";
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
       (a, b) =>
         new Date(a.$createdAt).getTime() - new Date(b.$createdAt).getTime()
     );
-
+    console.log({ prompt: userConversation.prompt });
     // string together history
     const history: Content[] = [
       {
@@ -117,6 +118,8 @@ export async function POST(request: NextRequest) {
     const result = await chatSession.sendMessage(
       userMessage ? userMessage.textContent : "start the conversation"
     );
+
+    console.log(result.response.text());
     const geminiCustomResponse: GeminiMessageResponse = JSON.parse(
       removeJsonEncasing(result.response.text())
     );
@@ -133,13 +136,14 @@ export async function POST(request: NextRequest) {
             isComplete: true,
           }
         )) as UserConversation;
+        console.log("UPDATED USER CONVO");
       } catch (error) {
         updatedUserConversation = null;
       }
     }
 
     // update user message
-    if (userMessage) {
+    if (userMessage && geminiResHasExtras(geminiCustomResponse)) {
       userMessage = (await databases.updateDocument(
         config.dbId,
         config.messageCollectionId,
@@ -151,6 +155,7 @@ export async function POST(request: NextRequest) {
           correctedText: geminiCustomResponse.correctedText,
         }
       )) as Message;
+      console.log("UPDATED message");
     }
 
     const savedBotMessage = (await databases.createDocument(
