@@ -28,6 +28,8 @@ const SidebarButton = ({
         </Link>
       ) : (
         <button className={className} onClick={onClick}>
+          <Image src={icon} width={35} height={35} alt={label} />
+
           <span className="hidden md:block">{label}</span>
         </button>
       )}
