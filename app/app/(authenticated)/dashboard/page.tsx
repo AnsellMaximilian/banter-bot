@@ -71,7 +71,8 @@ export default function AppPage() {
           prompt: generateUserConversationPrompt(
             selectedConversation,
             selectedPersonality,
-            currentUser.profile.username
+            currentUser.profile.username,
+            settings.language.locale
           ),
         };
 
