@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import logoHorizontal from "@/assets/banter-bot-logo-horizontal.svg";
 import logo from "@/assets/icon.svg";
 import { sidebarItems } from "@/const";
 import Link from "next/link";
@@ -42,10 +43,22 @@ export default function Sidebar() {
 
   return (
     <aside className="w-[100px] md:w-[360px] min-w-[100px] md:min-w-[360px] border-r-2 border-border p-4 flex flex-col">
-      <div className="p-4 flex gap-4 items-center">
-        <Image src={logo} height={60} width={60} alt="logo" className="" />
-        <div className="text-2xl font-bold hidden md:block">Banter Bot</div>
-      </div>
+      <Link className="p-4" href="/">
+        <Image
+          src={logoHorizontal}
+          height={500}
+          width={500}
+          alt="logo"
+          className="max-w-full w-96 hidden md:block"
+        />
+        <Image
+          src={logo}
+          height={35}
+          width={35}
+          alt="logo"
+          className="block md:hidden"
+        />
+      </Link>
       <ul className="flex flex-col gap-4 grow">
         {sidebarItems.map((item) => (
           <SidebarButton
