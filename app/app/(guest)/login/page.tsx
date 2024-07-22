@@ -37,9 +37,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const router = useRouter();
-
-  const { login } = useUser();
+  const { login, isProcessing } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -97,7 +95,11 @@ export default function LoginPage() {
                 )}
               />
               <div className="flex">
-                <Button type="submit" className="ml-auto">
+                <Button
+                  type="submit"
+                  className="ml-auto"
+                  disabled={isProcessing}
+                >
                   Login
                 </Button>
               </div>

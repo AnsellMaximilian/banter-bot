@@ -10,6 +10,7 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const getAccount = async () => {
     try {
@@ -29,13 +30,17 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const login = async (email: string, password: string) => {
+    setIsProcessing(true);
     const session = await account.createEmailPasswordSession(email, password);
     await getAccount();
+    setIsProcessing(false);
   };
 
   const logout = async () => {
+    setIsProcessing(true);
     await account.deleteSession("current");
     setCurrentUser(null);
+    setIsProcessing(false);
   };
 
   useEffect(() => {
@@ -47,6 +52,7 @@ export const UserContextProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         currentUser,
         isLoading,
+        isProcessing,
         setCurrentUser,
         login,
         logout,

@@ -30,6 +30,7 @@ import { config, functions } from "@/lib/appwrite";
 import { ExecutionMethod } from "appwrite";
 import publicRoute from "@/hooks/publicRoute";
 import Link from "next/link";
+import { useState } from "react";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -39,6 +40,7 @@ const formSchema = z.object({
 
 function RegisterPage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,25 +51,32 @@ function RegisterPage() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const { username, email, password } = values;
+    try {
+      const { username, email, password } = values;
 
-    const body = {
-      username,
-      email,
-      password,
-    };
+      const body = {
+        username,
+        email,
+        password,
+      };
 
-    const res = await functions.createExecution(
-      config.registerFuncId,
-      JSON.stringify(body),
-      false,
-      "/",
-      ExecutionMethod.POST
-    );
+      setIsLoading(true);
 
-    console.log(res);
-    if (!res.errors) {
-      router.push("/app/dashboard");
+      const res = await functions.createExecution(
+        config.registerFuncId,
+        JSON.stringify(body),
+        false,
+        "/",
+        ExecutionMethod.POST
+      );
+
+      console.log(res);
+      if (!res.errors) {
+        router.push("/app/dashboard");
+      }
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
