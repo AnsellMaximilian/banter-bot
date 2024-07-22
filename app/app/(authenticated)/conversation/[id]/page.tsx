@@ -41,6 +41,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import { Progress } from "@/components/ui/progress";
 import { delay, getConversationLoadingMessage } from "@/utils/common";
+import Personality from "@/components/personalities/Personality";
 
 function Page({
   params: { id: userConversationId },
@@ -66,6 +67,8 @@ function Page({
   const [currentMessageText, setCurrentMessageText] = useState("");
 
   const [loadProgress, setLoadProgress] = useState<0 | 1 | 2 | 3 | 4>(0);
+
+  const [isPersonalityOpen, setIsPersonalityOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -241,10 +244,16 @@ function Page({
               height={55}
               width={55}
               alt={personality.name}
-              className="rounded-full"
+              className="rounded-full cursor-pointer"
+              onClick={() => setIsPersonalityOpen(true)}
             />
             <div>
-              <h1 className="text-xl">{personality.name}</h1>
+              <h1
+                className="text-xl hover:underline cursor-pointer"
+                onClick={() => setIsPersonalityOpen(true)}
+              >
+                {personality.name}
+              </h1>
               <p className="text-sm text-muted-foreground">
                 {conversation.title}
               </p>
@@ -339,6 +348,26 @@ function Page({
                   }}
                 >
                   Got It
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          <Dialog open={isPersonalityOpen} onOpenChange={setIsPersonalityOpen}>
+            <DialogContent className="w-[600px] md:w-[750px] max-w-full">
+              <DialogHeader>
+                <DialogTitle className="">Personality</DialogTitle>
+                <DialogDescription className="">
+                  The bot you are talking to.
+                </DialogDescription>
+              </DialogHeader>
+              <Personality personality={personality} />
+              <DialogFooter>
+                <Button
+                  onClick={() => {
+                    setIsPersonalityOpen(false);
+                  }}
+                >
+                  Close
                 </Button>
               </DialogFooter>
             </DialogContent>
