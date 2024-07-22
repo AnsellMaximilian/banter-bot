@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex-col flex bg-[url('/images/banter-bot-bg.png')]">
+    <div className="min-h-screen flex-col flex bg-[url('/images/banter-bot-bg.png')] justify-center">
       <main className="container mx-auto p-4 py-16">
         <div className="flex flex-col justify-center items-center gap-8">
           <Image
@@ -21,7 +21,8 @@ export default function Home() {
               Master a New Language Through Engaging Conversations!
             </h1>
             <p className="text-2xl text-center">
-              Practice with AI Bots and Experience Unique, Dynamic Interactions.
+              Practice with various AI Personalities and Experience Unique,
+              Dynamic, and Responsive Interactions.
             </p>
           </div>
           <Link
@@ -31,11 +32,11 @@ export default function Home() {
             Get Started
           </Link>
         </div>
-        <div className="py-32">
+        {/* <div className="py-32">
           <h2 className="text-3xl font-semibold text-center">
             What is Banter Bot?
           </h2>
-        </div>
+        </div> */}
       </main>
     </div>
   );
