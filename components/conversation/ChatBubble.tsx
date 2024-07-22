@@ -29,7 +29,7 @@ export default function ChatBubble({
   return (
     <div
       className={cn(
-        "p-4 rounded-md shadow-md pr-8 relative group",
+        "p-4 rounded-md shadow-md pr-8 relative group max-w-[800px]",
         isFromUser ? "bg-white ml-16" : "bg-primary text-white mr-16"
       )}
     >
