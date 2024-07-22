@@ -14,8 +14,8 @@
 - [x] Add auth loader
 - [x] Add conversation loader
 - [x] Limit chat bubble width
-- [ ] Automatically scroll down in conversations
-- [ ] Home page
+- [x] Automatically scroll down in conversations
+- [x] Home page
 
 ## Backlog
 
@@ -23,3 +23,4 @@
   - [ ] Update profile
   - [ ] Add user prompt
 - [ ] Conversation sort/filter
+- [ ] Progress summation
