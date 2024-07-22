@@ -59,9 +59,12 @@ export default function AppPage() {
   const [selectedPersonality, setSelectedPersonality] =
     useState<IPersonality | null>(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const createUserConversation = async () => {
     if (currentUser && selectedConversation && selectedPersonality) {
       try {
+        setIsLoading(true);
         const body = {
           userId: currentUser.$id,
           personalityId: selectedPersonality.$id,
@@ -85,7 +88,10 @@ export default function AppPage() {
           );
 
         router.push(`/app/conversation/${createdUserConversation.$id}`);
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -188,6 +194,7 @@ export default function AppPage() {
           </div>
           <DialogFooter>
             <Button
+              disabled={isLoading}
               onClick={() => {
                 createUserConversation();
               }}
