@@ -7,7 +7,7 @@ import chatIcon from "@/assets/icons/chat.svg";
 export const sidebarItems = [
   { label: "Conversations", href: "/app/dashboard", icon: chatIcon },
   { label: "Personalities", href: "/app/personalities", icon: botIcon },
-  { label: "Profile", href: "/app/settings", icon: settingsIcon },
+  { label: "Profile", href: "/app/profile", icon: settingsIcon },
 ];
 
 export const languages: Language[] = [
