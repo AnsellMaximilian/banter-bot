@@ -13,7 +13,7 @@
 - [x] Include user name in chat prompt
 - [x] Add auth loader
 - [x] Add conversation loader
-- [ ] Limit chat bubble width
+- [x] Limit chat bubble width
 - [ ] Automatically scroll down in conversations
 - [ ] Home page
 
@@ -22,3 +22,4 @@
 - [ ] Profile page
   - [ ] Update profile
   - [ ] Add user prompt
+- [ ] Conversation sort/filter

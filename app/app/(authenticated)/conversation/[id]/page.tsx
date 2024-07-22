@@ -24,7 +24,7 @@ import {
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { ID, Permission, Query, Role } from "appwrite";
 import { SendHorizonal } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { createChatResponse } from "@/services/createChatResponse";
 import Image from "next/image";
@@ -69,6 +69,8 @@ function Page({
   const [loadProgress, setLoadProgress] = useState<0 | 1 | 2 | 3 | 4>(0);
 
   const [isPersonalityOpen, setIsPersonalityOpen] = useState(false);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     (async () => {
@@ -226,6 +228,14 @@ function Page({
     }
   };
 
+  useEffect(() => {
+    if (messages.length > 0) {
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      }
+    }
+  }, [messages.length]);
+
   const selectMessage = (msg: Message | null) => setSelectedMessage(msg);
 
   const language: Language | undefined = languages.find(
@@ -283,7 +293,10 @@ function Page({
               </Button>
             </div>
           </header>
-          <ScrollArea className="grow overflow-y-auto bg-primary/5">
+          <ScrollArea
+            className="grow overflow-y-auto bg-primary/5"
+            ref={scrollRef}
+          >
             <div className="flex flex-col gap-4 my-4">
               {messages.map((message, idx) => {
                 return (
