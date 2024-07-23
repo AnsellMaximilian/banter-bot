@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     const resMessages = await databases.listDocuments(
       config.dbId,
       config.messageCollectionId,
-      [Query.equal("senderId", userId)]
+      [Query.equal("senderId", userId), Query.equal("language", languageLocale)]
     );
 
     const messages = resMessages.documents as Message[];
