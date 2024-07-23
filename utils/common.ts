@@ -89,7 +89,8 @@ Respond in the following format with JSON:
  "mistakes": "if user message is not null, it should be string explaining what grammar/linguistic mistakes the user message has. If there are no mistakes or if user message is null, this should be null. This should still be in English regardless of the langauge specified for the conversation.",
  "correctedText": "if user message is not null and has mistakes, it should be string rewriting user message to be correct. If there are no mistakes or if user message is null, this should be null. This should still be in English regardless of the langauge specified for the conversation.",
  "explanation": "A string explaining in general grammar and linguistic concepts relating to either user message (if it has no mistakes) or the correctedText if it has any mistakes. If user message is null, this should be null. This should still be in English regardless of the langauge specified for the conversation.",
- "feedback": "A string giving feedback regardless of whether or not there are mistakes. Just advice for improvement. If user message is null, this should be null. This should still be in English regardless of the langauge specified for the conversation."
+ "feedback": "A string giving feedback regardless of whether or not there are mistakes. Just advice for improvement. If user message is null, this should be null. This should still be in English regardless of the langauge specified for the conversation.",
+ "translation": "This should be a string translation of message (your response to the user). If language is en-US or other variants of English, this should be null.",
 }
 
 ====
@@ -112,7 +113,8 @@ User: start the conversation
   "mistakes": null,
   "correctedText": null,
   "explanation": null,
-  "feedback": null
+  "feedback": null,
+  "translation": null
 }
 \`\`\`
 
@@ -124,7 +126,8 @@ User: Sure, what are up?
    "mistakes": "The phrase 'What are up?' is incorrect. It should be 'What is up?' or simply 'What's up?'.",
   "correctedText": "What's up?",
   "explanation": "The phrase 'What are up?' is grammatically incorrect because 'what' should be followed by 'is' in this context. 'What's up?' is an informal greeting or way to ask someone how they are or what they are doing.",
-  "feedback": "Good attempt at initiating a conversation! In casual English, 'What's up?' is a common and correct way to ask someone how they are doing. Keep practicing your greetings and casual phrases."
+  "feedback": "Good attempt at initiating a conversation! In casual English, 'What's up?' is a common and correct way to ask someone how they are doing. Keep practicing your greetings and casual phrases.",
+  "translation": null
 }
 \`\`\`
 
@@ -136,7 +139,8 @@ User: Video games are like entertainment that you can interact with. It's like r
   "mistakes": null,
   "correctedText": null,
   "explanation": null,
-  "feedback": "You've captured the interactive aspect of video games well. To improve, use comparisons that highlight the immersive experience of video games, such as being part of a movie or a book where you can influence the story."
+  "feedback": "You've captured the interactive aspect of video games well. To improve, use comparisons that highlight the immersive experience of video games, such as being part of a movie or a book where you can influence the story.",
+  "translation": null
 }
 \`\`\`
 
@@ -148,7 +152,8 @@ User: I'm sorry, sir. I meant no disrispeck. My favorite is Fallout: New Vegas.
    "mistakes": "The sentence 'I'm sorry, sir. I meant no disrispeck.' contains a spelling mistake and an informal contraction. 'disrispeck' should be 'disrespect.' The contraction 'meant no disrispeck' is informal and might not be suitable for all contexts.",
   "correctedText": "I'm sorry, sir. I meant no disrespect. My favorite is Fallout: New Vegas.",
   "explanation": "The original sentence contains a misspelling of 'disrespect.' In formal contexts, avoiding informal contractions and ensuring correct spelling improves clarity and professionalism.",
-  "feedback": "Your apology and expression of your favorite game are clear. Just watch out for spelling errors and consider the formality of your language based on the context. It's great to share your personal favorites like Fallout: New Vegas!"
+  "feedback": "Your apology and expression of your favorite game are clear. Just watch out for spelling errors and consider the formality of your language based on the context. It's great to share your personal favorites like Fallout: New Vegas!",
+  "translation": null
 }
 \`\`\`
 `;

@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import { Message, SenderType } from "@/type";
-import React from "react";
+import React, { useState } from "react";
 import { IoMdInformationCircleOutline } from "react-icons/io";
+import { PiTranslateFill } from "react-icons/pi";
 
 const Typing = () => {
   return (
@@ -20,6 +21,7 @@ export default function ChatBubble({
   message?: Message;
   select: (msg: Message | null) => void;
 }) {
+  const [isTranslated, setIsTranslated] = useState(false);
   const isFromUser = message?.senderType === SenderType.USER;
   const hasFeedback =
     message?.feedback ||
@@ -57,7 +59,35 @@ export default function ChatBubble({
         />
       )}
 
-      {!message ? <Typing /> : <span>{message.textContent}</span>}
+      {/* {!isFromUser && message?.translation && (
+        <PiTranslateFill
+          className={cn(
+            "absolute top-2 right-2 cursor-pointer",
+            isTranslated ? "text-[#2F2F2F]" : "text-white"
+          )}
+          onClick={() => setIsTranslated((prev) => !prev)}
+        />
+      )} */}
+
+      {!message ? (
+        <Typing />
+      ) : (
+        <div className="flex flex-col">
+          <div>
+            {isTranslated && message.translation
+              ? message.translation
+              : message.textContent}
+          </div>
+          {!isFromUser && message?.translation && (
+            <button
+              className="text-xs ml-auto mt-0.5 hover:underline text-gray-100"
+              onClick={() => setIsTranslated((prev) => !prev)}
+            >
+              {isTranslated ? "See original" : "See translation"}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

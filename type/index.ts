@@ -37,6 +37,7 @@ export type Message = Models.Document & {
   senderId: string;
   senderType: SenderType;
   userConversationId: string;
+  translation: string | null;
 } & MessageFeedback;
 
 export type MessageFeedback = {
@@ -86,6 +87,7 @@ export type RemoteDataWithSetter<T> = RemoteData<T> & {
 export type GeminiMessageResponse = {
   message: string;
   isGoalReached: boolean;
+  translation: null | string;
 } & MessageFeedback;
 
 export type CreateChatRequestBody = {

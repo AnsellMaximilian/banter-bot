@@ -167,6 +167,7 @@ export async function POST(request: NextRequest) {
         textContent: geminiCustomResponse.message,
         senderId: personalityId,
         senderType: SenderType.BOT,
+        translation: geminiCustomResponse.translation,
       },
       [
         Permission.read(Role.user(userConversation.userId)),
