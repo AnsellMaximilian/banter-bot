@@ -24,4 +24,4 @@
   - [ ] Add user prompt
 - [ ] Conversation sort/filter
 - [ ] Progress summation
-- [ ] Translation
+- [x] Translation

@@ -18,6 +18,7 @@ export const config = {
   personalityCollectionId: String(
     process.env.NEXT_PUBLIC_PERSONALITY_COLLECTION_ID
   ),
+  reviewCollectionId: String(process.env.NEXT_PUBLIC_REVIEW_COLLECTION_ID),
 };
 
 export const client = new Client();

@@ -101,3 +101,21 @@ export type CreateChatResponseBody = {
   botMessage: Message;
   updatedUserConversation: UserConversation;
 };
+
+export type Review = Models.Document & {
+  userId: string;
+  language: string;
+  reviewJSON: string;
+};
+
+export type ReviewJSON = {
+  summary: string;
+  vocabulary: ReviewItem;
+  grammar: ReviewItem;
+  spelling: ReviewItem;
+};
+
+export type ReviewItem = {
+  review: string;
+  score: number;
+};
