@@ -3,10 +3,12 @@ import { US, ES, BR, FR, DE, ID } from "country-flag-icons/react/3x2";
 import botIcon from "@/assets/icons/bot.svg";
 import settingsIcon from "@/assets/icons/settings.svg";
 import chatIcon from "@/assets/icons/chat.svg";
+import reviewsIcon from "@/assets/icons/review.svg";
 
 export const sidebarItems = [
   { label: "Conversations", href: "/app/dashboard", icon: chatIcon },
   { label: "Personalities", href: "/app/personalities", icon: botIcon },
+  { label: "AI Review", href: "/app/profile", icon: reviewsIcon },
   { label: "Profile", href: "/app/profile", icon: settingsIcon },
 ];
 
