@@ -167,6 +167,7 @@ function Page({
             textContent: currentMessageText,
             senderId: conversation.userConversation.userId,
             senderType: SenderType.USER,
+            language: conversation.userConversation.language,
           },
           [
             Permission.read(Role.user(conversation.userConversation.userId)),
