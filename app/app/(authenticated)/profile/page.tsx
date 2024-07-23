@@ -56,7 +56,9 @@ export default function Page() {
     defaultValues: {
       username: "",
       name: "",
-      language: languages[0].locale,
+      language: currentUser?.profile?.currentLanguage
+        ? currentUser.profile.currentLanguage
+        : languages[0].locale,
       bio: "",
     },
   });
