@@ -1,4 +1,4 @@
-import { Conversation, Message, Personality, SenderType } from "@/type";
+import { Conversation, Message, Personality, Review, SenderType } from "@/type";
 import { Models } from "appwrite";
 
 export const exampleConversations: Omit<Conversation, keyof Models.Document>[] =
@@ -299,3 +299,188 @@ export const examplePersonalities: Omit<Personality, keyof Models.Document>[] =
         "Creative, patient, and always experimenting. Charlie brings a sense of fun to the kitchen and loves sharing his culinary creations with others.",
     },
   ];
+
+export const exampleReviews: Omit<Review, keyof Models.Document>[] = [
+  {
+    userId: "user123",
+    language: "en-US",
+    reviewValue: {
+      summary:
+        "Great progress in English vocabulary and grammar, spelling needs improvement.",
+      vocabulary: {
+        review: "Learned 50 new words, actively using 30.",
+        score: 8,
+      },
+      grammar: {
+        review: "Understands and uses past and present tenses correctly.",
+        score: 7,
+      },
+      spelling: {
+        review: "Made frequent spelling errors, needs more practice.",
+        score: 5,
+      },
+    },
+    reviewJSON: JSON.stringify({
+      summary:
+        "Great progress in English vocabulary and grammar, spelling needs improvement.",
+      vocabulary: {
+        review: "Learned 50 new words, actively using 30.",
+        score: 8,
+      },
+      grammar: {
+        review: "Understands and uses past and present tenses correctly.",
+        score: 7,
+      },
+      spelling: {
+        review: "Made frequent spelling errors, needs more practice.",
+        score: 5,
+      },
+    }),
+  },
+  {
+    userId: "user123",
+    language: "es-ES",
+    reviewValue: {
+      summary:
+        "Steady improvement in Spanish vocabulary, good grasp of grammar.",
+      vocabulary: {
+        review: "Learned 40 new words, actively using 25.",
+        score: 7,
+      },
+      grammar: {
+        review: "Uses simple and compound sentences correctly.",
+        score: 8,
+      },
+      spelling: {
+        review: "Spelling is good with occasional mistakes.",
+        score: 6,
+      },
+    },
+    reviewJSON: JSON.stringify({
+      summary:
+        "Steady improvement in Spanish vocabulary, good grasp of grammar.",
+      vocabulary: {
+        review: "Learned 40 new words, actively using 25.",
+        score: 7,
+      },
+      grammar: {
+        review: "Uses simple and compound sentences correctly.",
+        score: 8,
+      },
+      spelling: {
+        review: "Spelling is good with occasional mistakes.",
+        score: 6,
+      },
+    }),
+  },
+  {
+    userId: "user123",
+    language: "id-ID",
+    reviewValue: {
+      summary:
+        "Excellent progress in Indonesian, vocabulary and grammar are strong.",
+      vocabulary: {
+        review: "Learned 60 new words, actively using 40.",
+        score: 9,
+      },
+      grammar: {
+        review: "Effectively uses various sentence structures.",
+        score: 8,
+      },
+      spelling: {
+        review: "Spelling is accurate with very few errors.",
+        score: 7,
+      },
+    },
+    reviewJSON: JSON.stringify({
+      summary:
+        "Excellent progress in Indonesian, vocabulary and grammar are strong.",
+      vocabulary: {
+        review: "Learned 60 new words, actively using 40.",
+        score: 9,
+      },
+      grammar: {
+        review: "Effectively uses various sentence structures.",
+        score: 8,
+      },
+      spelling: {
+        review: "Spelling is accurate with very few errors.",
+        score: 7,
+      },
+    }),
+  },
+  {
+    userId: "user123",
+    language: "fr-FR",
+    reviewValue: {
+      summary:
+        "Good understanding of French vocabulary and grammar, needs to work on spelling.",
+      vocabulary: {
+        review: "Learned 45 new words, actively using 35.",
+        score: 8,
+      },
+      grammar: {
+        review: "Can construct complex sentences.",
+        score: 7,
+      },
+      spelling: {
+        review: "Frequent spelling mistakes, especially with accents.",
+        score: 5,
+      },
+    },
+    reviewJSON: JSON.stringify({
+      summary:
+        "Good understanding of French vocabulary and grammar, needs to work on spelling.",
+      vocabulary: {
+        review: "Learned 45 new words, actively using 35.",
+        score: 8,
+      },
+      grammar: {
+        review: "Can construct complex sentences.",
+        score: 7,
+      },
+      spelling: {
+        review: "Frequent spelling mistakes, especially with accents.",
+        score: 5,
+      },
+    }),
+  },
+  // {
+  //   userId: "user123",
+  //   language: "de-DE",
+  //   reviewValue: {
+  //     summary:
+  //       "Solid progress in German vocabulary and grammar, spelling is satisfactory.",
+  //     vocabulary: {
+  //       review: "Learned 55 new words, actively using 30.",
+  //       score: 7,
+  //     },
+  //     grammar: {
+  //       review:
+  //         "Good understanding of sentence structure and verb conjugations.",
+  //       score: 8,
+  //     },
+  //     spelling: {
+  //       review: "Spelling is good with minor mistakes.",
+  //       score: 6,
+  //     },
+  //   },
+  //   reviewJSON: JSON.stringify({
+  //     summary:
+  //       "Solid progress in German vocabulary and grammar, spelling is satisfactory.",
+  //     vocabulary: {
+  //       review: "Learned 55 new words, actively using 30.",
+  //       score: 7,
+  //     },
+  //     grammar: {
+  //       review:
+  //         "Good understanding of sentence structure and verb conjugations.",
+  //       score: 8,
+  //     },
+  //     spelling: {
+  //       review: "Spelling is good with minor mistakes.",
+  //       score: 6,
+  //     },
+  //   }),
+  // },
+];

@@ -106,6 +106,7 @@ export type Review = Models.Document & {
   userId: string;
   language: string;
   reviewJSON: string;
+  reviewValue?: ReviewJSON;
 };
 
 export type ReviewJSON = {

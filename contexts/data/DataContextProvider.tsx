@@ -5,6 +5,7 @@ import {
   Conversation,
   Personality,
   RemoteData,
+  Review,
   Settings,
   User,
   UserConversation,
@@ -30,12 +31,49 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
     getDefaultRemoteData([])
   );
 
+  const [reviews, setReviews] = useState<RemoteData<Review[]>>(
+    getDefaultRemoteData([])
+  );
+
   const { settings } = useSettings();
 
   useEffect(() => {
     (async () => {
-      setRemoteDataLoading(setConversations, true);
       setRemoteDataLoading(setPersonalities, true);
+      setRemoteDataLoading(setReviews, true);
+
+      const resPersonalities = await databases.listDocuments(
+        config.dbId,
+        config.personalityCollectionId
+      );
+
+      const resReviews = await databases.listDocuments(
+        config.dbId,
+        config.reviewCollectionId
+      );
+
+      const personalities = resPersonalities.documents as Personality[];
+      const reviews = resReviews.documents as Review[];
+
+      setPersonalities((prev) => ({
+        ...prev,
+        data: personalities,
+      }));
+
+      setReviews((prev) => ({
+        ...prev,
+        data: reviews,
+      }));
+
+      setRemoteDataLoading(setPersonalities, false);
+      setRemoteDataLoading(setReviews, false);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      setRemoteDataLoading(setConversations, true);
+
       const resConvos = await databases.listDocuments(
         config.dbId,
         config.conversationCollectionId
@@ -47,11 +85,6 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
         [Query.equal("language", settings.language.locale)]
       );
 
-      const resPersonalities = await databases.listDocuments(
-        config.dbId,
-        config.personalityCollectionId
-      );
-      const personalities = resPersonalities.documents as Personality[];
       const conversations = resConvos.documents as Conversation[];
       const userConversations = resUserConvos.documents as UserConversation[];
 
@@ -65,12 +98,7 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
         })),
       }));
 
-      setPersonalities((prev) => ({
-        ...prev,
-        data: personalities,
-      }));
       setRemoteDataLoading(setConversations, false);
-      setRemoteDataLoading(setPersonalities, false);
     })();
   }, [settings.language]);
 
@@ -85,6 +113,7 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
           personalities,
           setPersonalities
         ),
+        reviews: getRemoteDataWithSetter<Review[]>(reviews, setReviews),
       }}
     >
       {children}

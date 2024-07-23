@@ -4,12 +4,14 @@ import {
   Personality,
   RemoteData,
   RemoteDataWithSetter,
+  Review,
   Settings,
 } from "@/type";
 import { createContext, Dispatch, SetStateAction, useContext } from "react";
 export interface DataContextData {
   conversations: RemoteDataWithSetter<Conversation[]>;
   personalities: RemoteDataWithSetter<Personality[]>;
+  reviews: RemoteDataWithSetter<Review[]>;
 }
 
 export const DataContext = createContext<DataContextData>({
@@ -19,6 +21,11 @@ export const DataContext = createContext<DataContextData>({
     setData: () => {},
   },
   personalities: {
+    isLoading: false,
+    data: [],
+    setData: () => {},
+  },
+  reviews: {
     isLoading: false,
     data: [],
     setData: () => {},
