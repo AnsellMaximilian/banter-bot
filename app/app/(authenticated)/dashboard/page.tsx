@@ -15,11 +15,12 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useData } from "@/contexts/data/DataContext";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Conversation as IConversation,
   Personality as IPersonality,
   UserConversation,
+  UserProfile,
 } from "@/type";
 import {
   Dialog,
@@ -49,7 +50,7 @@ import { useRouter } from "next/navigation";
 export default function AppPage() {
   const { settings, setSettings } = useSettings();
   const { conversations, personalities } = useData();
-  const { currentUser } = useUser();
+  const { currentUser, setCurrentUser } = useUser();
 
   const router = useRouter();
 
@@ -95,6 +96,18 @@ export default function AppPage() {
     }
   };
 
+  useEffect(() => {
+    if (currentUser?.profile) {
+      setSettings((prev) => ({
+        ...prev,
+        language:
+          languages.find(
+            (l) => l.locale === currentUser.profile.currentLanguage
+          ) || languages[0],
+      }));
+    }
+  }, [currentUser?.profile, setSettings]);
+
   return (
     <div className="p-4">
       <div className="flex justify-between">
@@ -115,9 +128,22 @@ export default function AppPage() {
                   "flex gap-4 cursor-pointer",
                   lang.locale === settings.language.locale ? "bg-secondary" : ""
                 )}
-                onClick={() =>
-                  setSettings((prev) => ({ ...prev, language: lang }))
-                }
+                onClick={async () => {
+                  setSettings((prev) => ({ ...prev, language: lang }));
+                  if (currentUser) {
+                    const updatedProfile = (await databases.updateDocument(
+                      config.dbId,
+                      config.userProfileCollectionId,
+                      currentUser.$id,
+                      {
+                        currentLanguage: lang.locale,
+                      }
+                    )) as UserProfile;
+                    setCurrentUser((prev) =>
+                      prev ? { ...prev, profile: updatedProfile } : null
+                    );
+                  }
+                }}
               >
                 <lang.flag className={cn("w-10")} />{" "}
                 <span>{lang.readableName}</span>

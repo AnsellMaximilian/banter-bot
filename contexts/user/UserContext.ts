@@ -1,8 +1,8 @@
 import { User } from "@/type";
-import { createContext, useContext } from "react";
+import { createContext, Dispatch, SetStateAction, useContext } from "react";
 export interface UserContextData {
   currentUser: User | null;
-  setCurrentUser: (user: User | null) => void;
+  setCurrentUser: Dispatch<SetStateAction<User | null>>;
   // for fetching account
   isLoading: boolean;
   // for activities involving accounts (register, login, etc)

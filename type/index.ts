@@ -10,6 +10,9 @@ export type ApiResponse<T> = {
 
 export type UserProfile = Models.Document & {
   username: string;
+  name?: string;
+  bio?: string;
+  currentLanguage: string;
 };
 
 export type User = Models.User<Models.Preferences> & {

@@ -19,8 +19,8 @@
 
 ## Backlog
 
-- [ ] Profile page
-  - [ ] Update profile
+- [x] Profile page
+  - [x] Update profile
   - [ ] Add user prompt
 - [ ] Conversation sort/filter
 - [ ] Progress summation
