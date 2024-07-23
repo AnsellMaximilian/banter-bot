@@ -5,7 +5,16 @@ import React, { useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
 import { languages } from "@/const";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { useData } from "@/contexts/data/DataContext";
 import { Button } from "@/components/ui/button";
@@ -95,6 +104,35 @@ export default function Page() {
             )}
           </div>
         </div>
+        {review && (
+          <div className="mt-2 flex justify-between items-start">
+            <div className="text-muted-foreground text-sm">
+              Last updated 30/20/2024
+            </div>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Get Updated Review</Button>
+              </DialogTrigger>
+              <DialogContent className="w-[600px] md:w-[750px] max-w-full">
+                <DialogHeader>
+                  <DialogTitle className="">Get Your Latest Review</DialogTitle>
+                  <DialogDescription className="">
+                    Ask AI to renew your language review based on the most
+                    recent data.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="flex justify-end gap-2">
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <DialogClose asChild>
+                    <Button>Got It</Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        )}
       </div>
     </div>
   );

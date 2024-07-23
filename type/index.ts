@@ -120,3 +120,12 @@ export type ReviewItem = {
   review: string;
   score: number;
 };
+
+export type CreateReviewRequestBody = {
+  userId: string;
+  language: string;
+};
+
+export type CreateReviewResponseBody = {
+  review: Review;
+};
