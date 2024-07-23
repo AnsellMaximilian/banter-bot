@@ -41,7 +41,7 @@ export default function Conversation({
             : "In Progress"
           : "Not Started"}
       </div>
-      <h3 className="text-xl font-semibold text-center mt-auto">
+      <h3 className="text-xl font-semibold text-center mt-auto mx-auto">
         {conversation.title}
       </h3>
       <p className="text-center text-sm mt-2">{conversation.description}</p>
