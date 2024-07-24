@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
 
     console.log(result.response.text());
     const geminiCustomResponse: GeminiMessageResponse = JSON.parse(
-      removeJsonEncasing(result.response.text())
+      removeJsonEncasing(removeJsonEncasing(result.response.text()))
     );
 
     let updatedUserConversation: UserConversation | null = null;
