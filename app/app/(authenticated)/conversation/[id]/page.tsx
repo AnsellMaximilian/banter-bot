@@ -242,6 +242,18 @@ function Page({
   const language: Language | undefined = languages.find(
     (l) => l.locale === conversation?.userConversation?.language
   );
+
+  console.log(
+    JSON.stringify(
+      messages
+        .filter((m) => m.senderType === SenderType.USER)
+        .map((m) => ({
+          text: m.textContent,
+          mistakes: m.mistakes,
+          correctedText: m.correctedText,
+        }))
+    )
+  );
   return (
     <div className="h-full flex flex-col">
       {conversation &&

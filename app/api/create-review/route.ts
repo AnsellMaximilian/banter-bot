@@ -6,9 +6,11 @@ import {
   CreateChatRequestBody,
   CreateChatResponseBody,
   CreateReviewRequestBody,
+  CreateReviewResponseBody,
   GeminiMessageResponse,
   Message,
   Review,
+  ReviewJSON,
   SenderType,
   UserConversation,
 } from "@/type";
@@ -16,9 +18,15 @@ import {
   createErrorResponse,
   createSuccessResponse,
   geminiResHasExtras,
+  getGenerateReviewPrompt,
+  hasBeenAWeekSince,
   removeJsonEncasing,
 } from "@/utils/common";
-import { geminiModel, generationConfig } from "@/utils/getGemini";
+import {
+  geminiFlashModel,
+  geminiModel,
+  generationConfig,
+} from "@/utils/getGemini";
 import { Content, GoogleGenerativeAIError } from "@google/generative-ai";
 import { Query } from "appwrite";
 import { NextRequest } from "next/server";
@@ -36,148 +44,89 @@ export async function POST(request: NextRequest) {
     const existingReviews = await databases.listDocuments(
       config.dbId,
       config.reviewCollectionId,
-      [Query.equal("userId", userId), Query.equal("language", languageLocale)]
+      [
+        Query.and([
+          Query.equal("userId", userId),
+          Query.equal("language", languageLocale),
+        ]),
+      ]
     );
 
     if (existingReviews.total > 0) {
       review = existingReviews.documents[0] as Review;
-    } else {
+      if (!hasBeenAWeekSince(review.$updatedAt))
+        return createErrorResponse("Reviews can only be created every week.");
     }
 
-    // fetch relevant messages (last 20 messages 7 days after latest update)
+    // fetch relevant messages (last 20 messages after latest update)
+    const messageQueries: string[] = [
+      Query.and([
+        Query.equal("senderId", userId),
+        Query.equal("language", languageLocale),
+        ...(review ? [Query.greaterThan("$createdAt", review.$updatedAt)] : []),
+      ]),
+      Query.limit(15),
+    ];
+
     const resMessages = await databases.listDocuments(
       config.dbId,
       config.messageCollectionId,
-      [Query.equal("senderId", userId), Query.equal("language", languageLocale)]
+      messageQueries
     );
+
+    if (resMessages.total < 15)
+      return createErrorResponse(
+        "You must have at least 15 new messages since the last review."
+      );
 
     const messages = resMessages.documents as Message[];
     const sortedMessages = messages.sort(
       (a, b) =>
         new Date(a.$createdAt).getTime() - new Date(b.$createdAt).getTime()
     );
-    // string together history
-    const history: Content[] = [
-      {
-        role: "user",
-        parts: [
-          {
-            text: `${userConversation.prompt}
-            user message: ${userMessage ? `"${userMessage}"` : "null"}
-            `,
-          },
-        ],
-      },
-      ...sortedMessages.map((m) => {
-        return {
-          role: m.senderType === SenderType.USER ? "user" : "model",
-          parts: [
-            {
-              text: `\`\`\`json
-            {
-              "message": ${m.textContent},
-              "isGoalReached": false
-            }
-            \`\`\``,
-            },
-          ],
-        };
-      }),
-    ];
-
-    if (userMessage) {
-      history.push({
-        role: "user",
-        parts: [
-          {
-            text: `\`\`\`json
-          {
-            "message": ${userMessage},
-            "isGoalReached": false
-          }
-          \`\`\``,
-          },
-        ],
-      });
-    }
-
-    // console.log(JSON.stringify(history));
 
     // ask for response by Gemini
-    const chatSession = geminiModel.startChat({
+    const geminiRes = await geminiFlashModel.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: getGenerateReviewPrompt(
+            languageLocale,
+            review,
+            messages.map((m) => ({
+              text: m.textContent,
+              mistakes: m.mistakes || null,
+              correctedText: m.correctedText || null,
+            }))
+          ),
+        },
+      ],
       generationConfig,
       // safetySettings: Adjust safety settings
       // See https://ai.google.dev/gemini-api/docs/safety-settings
-      history,
     });
 
-    const result = await chatSession.sendMessage(
-      userMessage ? userMessage.textContent : "start the conversation"
+    const geminiCustomResponse: ReviewJSON = JSON.parse(
+      removeJsonEncasing(geminiRes.response.text())
     );
 
-    console.log(result.response.text());
-    const geminiCustomResponse: GeminiMessageResponse = JSON.parse(
-      removeJsonEncasing(result.response.text())
-    );
-
-    let updatedUserConversation: UserConversation | null = null;
-
-    if (geminiCustomResponse.isGoalReached) {
-      try {
-        updatedUserConversation = (await databases.updateDocument(
-          config.dbId,
-          config.userConversationCollectionId,
-          userConversation.$id,
-          {
-            isComplete: true,
-          }
-        )) as UserConversation;
-        console.log("UPDATED USER CONVO");
-      } catch (error) {
-        updatedUserConversation = null;
-      }
-    }
-
-    // update user message
-    if (userMessage && geminiResHasExtras(geminiCustomResponse)) {
-      userMessage = (await databases.updateDocument(
-        config.dbId,
-        config.messageCollectionId,
-        userMessage.$id,
-        {
-          mistakes: geminiCustomResponse.mistakes,
-          feedback: geminiCustomResponse.feedback,
-          explanation: geminiCustomResponse.explanation,
-          correctedText: geminiCustomResponse.correctedText,
-        }
-      )) as Message;
-      console.log("UPDATED message");
-    }
-
-    const savedBotMessage = (await databases.createDocument(
+    const createdReview = (await databases.createDocument(
       config.dbId,
-      config.messageCollectionId,
+      config.reviewCollectionId,
       ID.unique(),
       {
-        userConversationId: userConversation.$id,
-        textContent: geminiCustomResponse.message,
-        senderId: personalityId,
-        senderType: SenderType.BOT,
-        translation: geminiCustomResponse.translation,
-      },
-      [
-        Permission.read(Role.user(userConversation.userId)),
-        Permission.update(Role.user(userConversation.userId)),
-      ]
-    )) as Message;
+        userId,
+        language: languageLocale,
+        reviewJSON: removeJsonEncasing(geminiRes.response.text()),
+      }
+    )) as Review;
 
-    const response: CreateChatResponseBody = {
-      userMessage: userMessage || null,
-      botMessage: savedBotMessage,
-      updatedUserConversation: updatedUserConversation || userConversation,
+    const response: CreateReviewResponseBody = {
+      review: { ...createdReview, reviewValue: geminiCustomResponse },
+      language: languageLocale,
     };
 
-    return createSuccessResponse(response, "Message(s) created");
+    return createSuccessResponse(response, "Review created");
   } catch (err) {
     console.log(err);
     let errorMsg = "Unkown Error";

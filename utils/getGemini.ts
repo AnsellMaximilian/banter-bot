@@ -11,6 +11,10 @@ export const geminiModel = genAI.getGenerativeModel({
   model: "gemini-1.5-pro",
 });
 
+export const geminiFlashModel = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
+});
+
 export const generationConfig = {
   temperature: 2,
   topP: 0.95,

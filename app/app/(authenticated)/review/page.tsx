@@ -28,14 +28,57 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import ReviewItem from "@/components/review/ReviewItem";
+import { createReview } from "@/services/createReview";
+import { useUser } from "@/contexts/user/UserContext";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Page() {
   const { reviews } = useData();
+  const { toast } = useToast();
+  const { currentUser } = useUser();
   const [selectedLocale, setSelectedLocale] = useState(languages[0].locale);
+  const [isGeneratingReview, setIsGeneratingReview] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
-  const review = (exampleReviews as Review[]).find(
-    (r) => r.language === selectedLocale
-  );
+  const review = reviews.data.find((r) => r.language === selectedLocale);
+
+  const generateReview = async () => {
+    if (currentUser) {
+      try {
+        setIsGeneratingReview(true);
+        const res = await createReview(selectedLocale, currentUser.$id);
+        if (res.success && res.data) {
+          const review = res.data.review;
+          const lang = res.data.language;
+          reviews.setData((prev) => {
+            const reviews = prev.data;
+            const foundReview = reviews.find((r) => r.language === lang);
+            console.log({ reviews, foundReview });
+            return {
+              ...prev,
+              data: foundReview
+                ? prev.data.map((r) => (r.language === lang ? review : r))
+                : [...prev.data, review],
+            };
+          });
+          toast({
+            title: "Created review",
+          });
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: res.message,
+            // action: <ToastAction altText="Try again">Try again</ToastAction>,
+          });
+        }
+      } catch (error) {
+      } finally {
+        setIsGeneratingReview(false);
+        setIsConfirmDialogOpen(false);
+      }
+    }
+  };
 
   return (
     <div className="p-4">
@@ -98,7 +141,9 @@ export default function Page() {
                   <div className="text-center text-xl font-light">
                     You haven&apos;t had a review in this language yet.
                   </div>
-                  <Button>Generate Review</Button>
+                  <Button onClick={() => setIsConfirmDialogOpen(true)}>
+                    Generate Review
+                  </Button>
                 </div>
               </div>
             )}
@@ -109,31 +154,34 @@ export default function Page() {
             <div className="text-muted-foreground text-sm">
               Last updated 30/20/2024
             </div>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button>Get Updated Review</Button>
-              </DialogTrigger>
-              <DialogContent className="w-[600px] md:w-[750px] max-w-full">
-                <DialogHeader>
-                  <DialogTitle className="">Get Your Latest Review</DialogTitle>
-                  <DialogDescription className="">
-                    Ask AI to renew your language review based on the most
-                    recent data.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogFooter className="flex justify-end gap-2">
-                  <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DialogClose>
-                  <DialogClose asChild>
-                    <Button>Got It</Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <Button onClick={() => setIsConfirmDialogOpen(true)}>
+              Get Updated Review
+            </Button>
           </div>
         )}
       </div>
+      <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
+        <DialogContent className="w-[600px] md:w-[750px] max-w-full">
+          <DialogHeader>
+            <DialogTitle className="">Get Your Latest Review</DialogTitle>
+            <DialogDescription className="">
+              Ask AI to renew your language review based on the most recent
+              data.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex justify-end gap-2">
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button
+              disabled={isGeneratingReview}
+              onClick={() => generateReview()}
+            >
+              Generate
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

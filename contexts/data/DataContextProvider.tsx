@@ -60,10 +60,19 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
         data: personalities,
       }));
 
-      setReviews((prev) => ({
-        ...prev,
-        data: reviews,
-      }));
+      setReviews((prev) => {
+        const review = {
+          ...prev,
+          data: reviews.map((r) => {
+            try {
+              r.reviewValue = JSON.parse(r.reviewJSON);
+            } catch (error) {}
+            return r;
+          }),
+        };
+
+        return review;
+      });
 
       setRemoteDataLoading(setPersonalities, false);
       setRemoteDataLoading(setReviews, false);

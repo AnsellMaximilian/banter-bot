@@ -128,4 +128,11 @@ export type CreateReviewRequestBody = {
 
 export type CreateReviewResponseBody = {
   review: Review;
+  language: string;
+};
+
+export type MessageForReview = {
+  text: string;
+  mistakes: string | null;
+  correctedText: string | null;
 };
