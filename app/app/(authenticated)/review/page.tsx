@@ -31,6 +31,7 @@ import ReviewItem from "@/components/review/ReviewItem";
 import { createReview } from "@/services/createReview";
 import { useUser } from "@/contexts/user/UserContext";
 import { useToast } from "@/components/ui/use-toast";
+import { timeSince } from "@/utils/common";
 
 export default function Page() {
   const { reviews } = useData();
@@ -152,7 +153,7 @@ export default function Page() {
         {review && (
           <div className="mt-2 flex justify-between items-start">
             <div className="text-muted-foreground text-xs md:text-sm">
-              Last updated 30/20/2024
+              Last updated {timeSince(review.$updatedAt)}
             </div>
             <Button
               onClick={() => setIsConfirmDialogOpen(true)}
