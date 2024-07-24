@@ -106,6 +106,7 @@ function Page({
             config.messageCollectionId,
             [
               Query.equal("userConversationId", userConversationId),
+              Query.orderAsc("$createdAt"),
               Query.limit(100),
             ]
           )
