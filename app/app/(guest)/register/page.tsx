@@ -140,7 +140,7 @@ function RegisterPage() {
                 )}
               />
               <div className="flex">
-                <Button type="submit" className="ml-auto">
+                <Button type="submit" className="ml-auto" disabled={isLoading}>
                   Register
                 </Button>{" "}
               </div>
