@@ -9,10 +9,7 @@ export default function Personality({
   personality: IPersonality;
 }) {
   return (
-    <Link
-      href="/app/conversation"
-      className="flex gap-4 border-border border rounded-md p-4 hover:border-primary hover:bg-secondary cursor-pointer"
-    >
+    <div className="flex gap-4 border-border border rounded-md p-4 hover:border-primary hover:bg-secondary cursor-pointer">
       <Image
         src={personality.imageUrl}
         width={200}
@@ -27,6 +24,6 @@ export default function Personality({
 
         <p className="mt-2 text-sm">{personality.description}</p>
       </div>
-    </Link>
+    </div>
   );
 }
