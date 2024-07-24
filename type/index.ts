@@ -54,6 +54,7 @@ export type UserConversation = Models.Document & {
   isComplete: boolean;
   conversationId: string;
   prompt: string;
+  personalityImage: string;
 };
 
 export type Personality = Models.Document & {

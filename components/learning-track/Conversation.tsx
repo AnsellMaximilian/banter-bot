@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { Conversation as IConversation } from "@/type";
-import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction } from "react";
 
@@ -41,7 +41,18 @@ export default function Conversation({
             : "In Progress"
           : "Not Started"}
       </div>
-      <h3 className="text-xl font-semibold text-center mt-auto mx-auto">
+      <Image
+        src={
+          conversation.userConversation
+            ? conversation.userConversation.personalityImage
+            : "/images/personalities/default.png"
+        }
+        width={200}
+        height={200}
+        alt="Personality"
+        className="rounded-full w-32 mx-auto mt-auto"
+      />
+      <h3 className="text-xl font-semibold text-center mt-4 mx-auto">
         {conversation.title}
       </h3>
       <p className="text-center text-sm mt-2">{conversation.description}</p>
