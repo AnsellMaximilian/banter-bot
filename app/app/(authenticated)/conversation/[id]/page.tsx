@@ -215,6 +215,9 @@ function Page({
             ),
           }));
         } else {
+          setMessages((msgs) =>
+            msgs.filter((m) => m.$id !== savedUserMessage.$id)
+          );
           toast({
             variant: "destructive",
             title: "Error",

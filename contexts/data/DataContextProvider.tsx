@@ -85,7 +85,9 @@ export const DataContextProvider: React.FC<{ children: ReactNode }> = ({
 
       const resConvos = await databases.listDocuments(
         config.dbId,
-        config.conversationCollectionId
+        config.conversationCollectionId,
+
+        [Query.limit(50)]
       );
 
       const resUserConvos = await databases.listDocuments(

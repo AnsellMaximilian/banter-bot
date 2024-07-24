@@ -29,8 +29,9 @@ export async function POST(request: NextRequest) {
   const personalityId = body.personalityId;
   const messageId = body.messageId;
 
+  let userMessage: Message | null = null;
+
   try {
-    let userMessage: Message | null = null;
     // get message
     if (messageId) {
       userMessage = (await databases.getDocument(
@@ -189,6 +190,14 @@ export async function POST(request: NextRequest) {
     if (err instanceof GoogleGenerativeAIError)
       errorMsg = "Gemini encountered some error. Please try again.";
     else if (err instanceof Error) errorMsg = err.message;
+
+    if (userMessage)
+      databases.deleteDocument(
+        config.dbId,
+        config.messageCollectionId,
+        userMessage.$id
+      );
+
     return createErrorResponse(errorMsg);
   }
 }
