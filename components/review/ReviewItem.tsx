@@ -10,7 +10,7 @@ export default function ReviewItem({
   reviewItem: IReviewItem;
 }) {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center gap-8">
       <div>
         <div className="text-sm font-semibold">{title}</div>
         <p>{reviewItem.review}</p>
