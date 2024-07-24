@@ -31,6 +31,7 @@ import { ExecutionMethod } from "appwrite";
 import publicRoute from "@/hooks/publicRoute";
 import Link from "next/link";
 import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   username: z.string().min(2).max(50),
@@ -40,6 +41,7 @@ const formSchema = z.object({
 
 function RegisterPage() {
   const router = useRouter();
+  const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,6 +75,12 @@ function RegisterPage() {
       console.log(res);
       if (!res.errors) {
         router.push("/app/dashboard");
+      } else {
+        toast({
+          title: "Registration Failed",
+          variant: "destructive",
+          description: res.errors,
+        });
       }
     } catch (error) {
     } finally {
