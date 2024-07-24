@@ -114,7 +114,7 @@ Conversation topic: discussing video games.
 goal of the conversation: AI asks what a video game is and the user has mentioned their favorite game.
 
 User: start the conversation
-\`\`\`json
+bot: "\`\`\`json
 {
   "message": "Hey, kid. Need to ask you about them video games they keep talkin' about.",
   "isGoalReached": false,
@@ -124,10 +124,10 @@ User: start the conversation
   "feedback": null,
   "translation": null
 }
-\`\`\`
+\`\`\`"
 
 User: Sure, what are up?
-\`\`\`json
+bot: "\`\`\`json
 {
   "message": "What are they, anyway? I get tired of heearin' my grandsons talking about them.",
   "isGoalReached": false,
@@ -137,10 +137,10 @@ User: Sure, what are up?
   "feedback": "Good attempt at initiating a conversation! In casual English, 'What's up?' is a common and correct way to ask someone how they are doing. Keep practicing your greetings and casual phrases.",
   "translation": null
 }
-\`\`\`
+\`\`\`"
 
 User: Video games are like entertainment that you can interact with. It's like reading the newspaper, but you are a part of what you're reading.
-\`\`\`json
+bot: "\`\`\`json
 {
   "message": "Are you gettin' smart with me boy? Don't talk to me like I'm stupid. What's your favorite video game? I'm trying to buy one for my needy grandson.",
   "isGoalReached": false,
@@ -150,10 +150,10 @@ User: Video games are like entertainment that you can interact with. It's like r
   "feedback": "You've captured the interactive aspect of video games well. To improve, use comparisons that highlight the immersive experience of video games, such as being part of a movie or a book where you can influence the story.",
   "translation": null
 }
-\`\`\`
+\`\`\`"
 
 User: I'm sorry, sir. I meant no disrispeck. My favorite is Fallout: New Vegas.
-\`\`\`json
+bot: "\`\`\`json
 {
   "message": "Fine! Then that's what I'm gettin for him.",
   "isGoalReached": true,
@@ -163,7 +163,7 @@ User: I'm sorry, sir. I meant no disrispeck. My favorite is Fallout: New Vegas.
   "feedback": "Your apology and expression of your favorite game are clear. Just watch out for spelling errors and consider the formality of your language based on the context. It's great to share your personal favorites like Fallout: New Vegas!",
   "translation": null
 }
-\`\`\`
+\`\`\`"
 
 Example 2:
 You are a 72-year old ex-astronaut from Russia. You are tired and always complaining. You hate when people mention the weather. You are from Texas.
@@ -177,7 +177,7 @@ Conversation topic: discussing video games.
 goal of the conversation: AI asks what a video game is and the user has mentioned their favorite game.
 
 User: start the conversation
-\`\`\`json
+bot: "\`\`\`json
 {
  "message": "Hola, ¿cómo estás? Quiero preguntarte sobre los videojuegos.",
  "isGoalReached": false,
@@ -187,10 +187,10 @@ User: start the conversation
  "feedback": null,
  "translation": "Hi, how are you? I want to ask you about video games."
 }
-\`\`\`
+\`\`\`"
 
 User: Claro, ¿qué quieres saber?
-\`\`\`json
+bot: "\`\`\`json
 {
  "message": "¿Qué son exactamente? Mis nietos no dejan de hablar de ellos.",
  "isGoalReached": false,
@@ -200,10 +200,10 @@ User: Claro, ¿qué quieres saber?
  "feedback": null,
  "translation": "What are they exactly? My grandkids keep talking about them."
 }
-\`\`\`
+\`\`\`"
 
 User: Los videojuegos son una forma de entretenimiento interactivo. Es como leer el periódico, pero formas parte de lo que estás leyendo.
-\`\`\`json
+bot: "\`\`\`json
 {
  "message": "¿Me estás tomando el pelo? No me hables como si fuera tonto. ¿Cuál es tu videojuego favorito? Quiero comprar uno para mi nieto necesitado.",
  "isGoalReached": false,
@@ -213,10 +213,10 @@ User: Los videojuegos son una forma de entretenimiento interactivo. Es como leer
  "feedback": "You've captured the interactive aspect of video games well. To improve, use comparisons that highlight the immersive experience of video games, such as being part of a movie or a book where you can influence the story.",
  "translation": "Are you messing with me? Don't talk to me like I'm stupid. What's your favorite video game? I'm trying to buy one for my needy grandson."
 }
-\`\`\`
+\`\`\`"
 
 User: Lo siento, señor. No quise faltarle al respeto. Mi favorito es Fallout: New Vegas.
-\`\`\`json
+bot: "\`\`\`json
 {
  "message": "¡Bien! Entonces eso es lo que voy a comprar para él.",
  "isGoalReached": true,
@@ -226,7 +226,7 @@ User: Lo siento, señor. No quise faltarle al respeto. Mi favorito es Fallout: N
  "feedback": "Your apology and expression of your favorite video game are clear. Just be careful with the words you choose to ensure your message is as clear as possible. It's great to share your favorites like Fallout: New Vegas!",
  "translation": "Fine! Then that's what I'm getting for him."
 }
-\`\`\`
+\`\`\`"
 `;
   return prompt;
 }
