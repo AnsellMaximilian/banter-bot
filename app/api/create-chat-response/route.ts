@@ -15,8 +15,13 @@ import {
   createSuccessResponse,
   geminiResHasExtras,
   removeJsonEncasing,
+  removeJsonMarkdown,
 } from "@/utils/common";
-import { geminiModel, generationConfig } from "@/utils/getGemini";
+import {
+  geminiModel,
+  generationConfig,
+  safetySettings,
+} from "@/utils/getGemini";
 import { Content, GoogleGenerativeAIError } from "@google/generative-ai";
 import { Query } from "appwrite";
 import { NextRequest } from "next/server";
@@ -111,6 +116,7 @@ export async function POST(request: NextRequest) {
     // ask for response by Gemini
     const chatSession = geminiModel.startChat({
       generationConfig,
+      safetySettings: safetySettings,
       // safetySettings: Adjust safety settings
       // See https://ai.google.dev/gemini-api/docs/safety-settings
       history,
@@ -122,7 +128,7 @@ export async function POST(request: NextRequest) {
 
     console.log(result.response.text());
     const geminiCustomResponse: GeminiMessageResponse = JSON.parse(
-      removeJsonEncasing(removeJsonEncasing(result.response.text()))
+      removeJsonMarkdown(removeJsonEncasing(result.response.text()))
     );
 
     let updatedUserConversation: UserConversation | null = null;

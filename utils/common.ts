@@ -20,6 +20,10 @@ export function removeJsonEncasing(text: string) {
   return result;
 }
 
+export function removeJsonMarkdown(text: string) {
+  return text.replace("```json", "").replace("```", "");
+}
+
 export function createErrorResponse(message: string): Response {
   const res: ApiResponse<null> = {
     data: null,

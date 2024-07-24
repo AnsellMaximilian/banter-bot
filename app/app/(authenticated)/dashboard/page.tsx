@@ -89,6 +89,15 @@ export default function AppPage() {
             body
           );
 
+        conversations.setData((prev) => ({
+          ...prev,
+          data: prev.data.map((c) =>
+            c.$id === createdUserConversation.conversationId
+              ? { ...c, userConversation: createdUserConversation }
+              : c
+          ),
+        }));
+
         router.push(`/app/conversation/${createdUserConversation.$id}`);
       } catch (error) {
       } finally {
