@@ -18,14 +18,14 @@ export default function Personality({
         width={200}
         height={200}
         alt={`Picture of ${personality.name}`}
-        className="rounded-md"
+        className="rounded-md w-[250px] h-[250px] object-cover"
       />
 
       <div>
         <h3 className="text-2xl font-semibold">{personality.name}</h3>
         <p className="text-lg">{personality.persona}</p>
 
-        <p className="mt-2 text-sm">{personality.traits}</p>
+        <p className="mt-2 text-sm">{personality.description}</p>
       </div>
     </Link>
   );
