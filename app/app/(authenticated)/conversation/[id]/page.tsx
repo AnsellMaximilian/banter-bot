@@ -104,7 +104,10 @@ function Page({
           await databases.listDocuments(
             config.dbId,
             config.messageCollectionId,
-            [Query.equal("userConversationId", userConversationId)]
+            [
+              Query.equal("userConversationId", userConversationId),
+              Query.limit(100),
+            ]
           )
         ).documents as Message[];
         setLoadProgress(4);
