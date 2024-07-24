@@ -78,6 +78,7 @@ export default function AppPage() {
             currentUser.profile.username,
             settings.language.locale
           ),
+          personalityImage: selectedPersonality.imageUrl,
         };
 
         const createdUserConversation: UserConversation =
