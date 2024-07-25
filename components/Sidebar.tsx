@@ -19,17 +19,29 @@ const SidebarButton = ({
   icon: string;
 }) => {
   const className =
-    "flex p-4 items-center w-full h-16 border-border border-2 hover:bg-secondary hover:border-primary rounded-md uppercase font-semibold gap-4 justify-start";
+    "flex p-2 md:p-4 items-center w-full h-16 border-border border-2 hover:bg-secondary hover:border-primary rounded-md uppercase font-semibold gap-4 justify-center md:justify-start";
   return (
     <li className="">
       {href ? (
         <Link className={className} href={href}>
-          <Image src={icon} width={35} height={35} alt={label} />
+          <Image
+            src={icon}
+            width={35}
+            height={35}
+            alt={label}
+            className="w-8 md:w-[35px]"
+          />
           <span className="hidden md:block">{label}</span>
         </Link>
       ) : (
         <button className={className} onClick={onClick}>
-          <Image src={icon} width={35} height={35} alt={label} />
+          <Image
+            src={icon}
+            width={35}
+            height={35}
+            alt={label}
+            className="w-8 md:w-[35px]"
+          />
 
           <span className="hidden md:block">{label}</span>
         </button>
@@ -42,8 +54,8 @@ export default function Sidebar() {
   const { logout } = useUser();
 
   return (
-    <aside className="w-[100px] md:w-[360px] min-w-[100px] md:min-w-[360px] border-r-2 border-border p-4 flex flex-col">
-      <Link className="p-4" href="/">
+    <aside className="w-[80px] md:w-[360px] min-w-[80px] md:min-w-[360px] border-r-2 border-border p-2 md:p-4 flex flex-col">
+      <Link className="p-2 md:p-4 mx-auto md:mx-0" href="/">
         <Image
           src={logoHorizontal}
           height={500}
@@ -56,10 +68,10 @@ export default function Sidebar() {
           height={35}
           width={35}
           alt="logo"
-          className="block md:hidden"
+          className="block md:hidden w-12"
         />
       </Link>
-      <ul className="flex flex-col gap-4 grow">
+      <ul className="flex flex-col gap-2 md:gap-4 grow">
         {sidebarItems.map((item) => (
           <SidebarButton
             label={item.label}

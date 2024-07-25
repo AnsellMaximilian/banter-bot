@@ -31,6 +31,7 @@ import ReviewItem from "@/components/review/ReviewItem";
 import { createReview } from "@/services/createReview";
 import { useUser } from "@/contexts/user/UserContext";
 import { useToast } from "@/components/ui/use-toast";
+import { timeSince } from "@/utils/common";
 
 export default function Page() {
   const { reviews } = useData();
@@ -83,7 +84,7 @@ export default function Page() {
   return (
     <div className="p-4">
       <h1 className="text-3xl font-semibold">Your Reviews</h1>
-      <p className="text-muted-foreground">
+      <p className="text-muted-foreground text-sm md:text-base">
         This is where you&apos;ll be able to see your progress in each language.
         See your current level of understanding and/or how you&apos;ve improved
         since the last review.
@@ -115,11 +116,11 @@ export default function Page() {
             {review && review.reviewValue ? (
               <div className="">
                 <h2 className="text-xl font-semibold">Generated Review</h2>
-                <p className="mt-2 text-lg">{review.reviewValue.summary}</p>
+                <p className="mt-2 md:text-lg">{review.reviewValue.summary}</p>
                 <Separator className="my-8" />
                 <div className="">
                   <h3 className="font-bold">Details</h3>
-                  <div className="space-y-4 mt-4">
+                  <div className="space-y-8 md:space-y-4 mt-4 divide-y-2">
                     <ReviewItem
                       title="Grammar"
                       reviewItem={review.reviewValue.grammar}
@@ -151,10 +152,13 @@ export default function Page() {
         </div>
         {review && (
           <div className="mt-2 flex justify-between items-start">
-            <div className="text-muted-foreground text-sm">
-              Last updated 30/20/2024
+            <div className="text-muted-foreground text-xs md:text-sm">
+              Last updated {timeSince(review.$updatedAt)}
             </div>
-            <Button onClick={() => setIsConfirmDialogOpen(true)}>
+            <Button
+              onClick={() => setIsConfirmDialogOpen(true)}
+              className="text-xs md:text-base px-3 py-1 md:px-4 md:py-2 h-8 md:h-auto"
+            >
               Get Updated Review
             </Button>
           </div>

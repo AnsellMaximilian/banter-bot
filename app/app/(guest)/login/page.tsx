@@ -52,8 +52,8 @@ export default function LoginPage() {
     login(email, password);
   }
   return (
-    <div className="flex flex-col justify-center grow items-center">
-      <Card className="w-[500px] max-w-full">
+    <div className="flex flex-col justify-center grow items-center p-4">
+      <Card className="w-full md:w-[500px] max-w-full">
         <CardHeader className="text-center">
           <Image
             src={logo}

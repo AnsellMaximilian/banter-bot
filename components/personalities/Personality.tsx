@@ -9,7 +9,7 @@ export default function Personality({
   personality: IPersonality;
 }) {
   return (
-    <div className="flex gap-4 border-border border rounded-md p-4 hover:border-primary hover:bg-secondary cursor-pointer">
+    <div className="flex flex-col md:flex-row gap-4 border-border border rounded-md p-4 hover:border-primary hover:bg-secondary cursor-pointer">
       <Image
         src={personality.imageUrl}
         width={200}
