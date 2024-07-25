@@ -321,3 +321,17 @@ export function getGenerateReviewPrompt(
   ];
   return parts;
 }
+export function surroundMessageWithQuotes(input: string) {
+  return input.replace(/(?<="message": )(.*?)(?=,\n)/g, (match) => {
+    // Surround the match with quotes
+    const startIsQuote = match.startsWith('"');
+    const endIsQuote = match[match.length - 1] === '"';
+
+    console.log({ startIsQuote, endIsQuote });
+
+    if (startIsQuote && endIsQuote) return match;
+    else if (startIsQuote) return `${match}"`;
+    else if (endIsQuote) return `"${match}`;
+    return `"${match}"`;
+  });
+}

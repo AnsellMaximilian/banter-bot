@@ -16,6 +16,7 @@ import {
   geminiResHasExtras,
   removeJsonEncasing,
   removeJsonMarkdown,
+  surroundMessageWithQuotes,
 } from "@/utils/common";
 import {
   geminiModel,
@@ -126,9 +127,16 @@ export async function POST(request: NextRequest) {
       userMessage ? userMessage.textContent : "start the conversation"
     );
 
-    console.log(result.response.text());
+    console.log({
+      result: result.response.text(),
+      set: surroundMessageWithQuotes(
+        removeJsonMarkdown(removeJsonEncasing(result.response.text()))
+      ),
+    });
     const geminiCustomResponse: GeminiMessageResponse = JSON.parse(
-      removeJsonMarkdown(removeJsonEncasing(result.response.text()))
+      surroundMessageWithQuotes(
+        removeJsonMarkdown(removeJsonEncasing(result.response.text()))
+      ).replace("\n", "")
     );
 
     let updatedUserConversation: UserConversation | null = null;
