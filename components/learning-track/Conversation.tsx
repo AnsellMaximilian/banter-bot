@@ -50,12 +50,14 @@ export default function Conversation({
         width={200}
         height={200}
         alt="Personality"
-        className="rounded-full w-32 mx-auto mt-auto"
+        className="rounded-full w-24 mx-auto mt-auto"
       />
-      <h3 className="text-xl font-semibold text-center mt-4 mx-auto">
+      <h3 className="text-lg md:text-xl font-semibold text-center mt-4 mx-auto">
         {conversation.title}
       </h3>
-      <p className="text-center text-sm mt-2">{conversation.description}</p>
+      <p className="text-center text-sm mt-1 md:mt-2 mx-auto">
+        {conversation.description}
+      </p>
     </button>
   );
 }
